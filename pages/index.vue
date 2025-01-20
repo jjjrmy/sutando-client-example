@@ -44,15 +44,22 @@
             <button 
                 v-else
                 @click="isEditing = true" 
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
             >
                 Edit Profile
+            </button>
+            <button 
+                v-if="!isEditing"
+                @click="refresh" 
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+                Refresh Data
             </button>
         </div>
 
         <!-- Posts List -->
         <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-bold mb-4">Posts</h2>
+            <h2 class="text-xl font-bold mb-4">Posts <small>{{ user.has_posts ? 'has posts' : 'no posts' }}</small></h2>
             <div class="space-y-4">
                 <div v-for="post in user.posts" :key="post.id" class="flex justify-between items-center p-4 border rounded">
                     <div>{{ post.title }}</div>
@@ -63,7 +70,7 @@
                         Remove
                     </button>
                 </div>
-                <div v-if="!user.posts?.length" class="text-gray-500">
+                <div v-if="user.posts.isEmpty()" class="text-gray-500">
                     No posts found
                 </div>
             </div>
@@ -75,22 +82,7 @@
 import { make } from 'sutando';
 import User from '~/models/User';
 import Post from '~/models/Post';
-
-function modelRef(value: any = null) {
-  const _value = ref(value);
-  const skipNextWatch = ref(false);
-
-  watch(_value, () => {
-    if (skipNextWatch.value) {
-      skipNextWatch.value = false;
-      return;
-    }
-    skipNextWatch.value = true;
-    triggerRef(_value);
-  }, { deep: true });
-
-  return _value;
-}
+import { modelRef } from '~/utils/model';
 
 const user = modelRef();
 const { data: userData, refresh } = await useFetch('/api/user');
