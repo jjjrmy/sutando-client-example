@@ -1,77 +1,39 @@
+<!-- Users List Page -->
 <template>
     <div class="container mx-auto p-4">
-        <div class="bg-white shadow rounded-lg p-6 mb-6">
-            <h1 class="text-2xl font-bold mb-4">User Profile</h1>
-            
-            <!-- Profile Info -->
-            <div class="mb-4">
-                <p><strong>ID:</strong> {{ user.id }}</p>
-                <p><strong>Full Name:</strong> {{ user.full_name }}</p>
-                <p><strong>Created:</strong> {{ user.created_at?.toLocaleString() }}</p>
-                <p><strong>Updated:</strong> {{ user.updated_at?.toLocaleString() }}</p>
-            </div>
-
-            <!-- Edit Form -->
-            <div v-if="isEditing" class="mb-4">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">First Name</label>
-                        <input 
-                            type="text" 
-                            v-model="user.first_name" 
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                            @change="updateField('updated_at', true)"
-                        >
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Last Name</label>
-                        <input 
-                            type="text" 
-                            v-model="user.last_name" 
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                            @change="updateField('updated_at', true)"
-                        >
-                    </div>
-                    <button 
-                        @click="isEditing = false" 
-                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-                    >
-                        Done
-                    </button>
-                </div>
-            </div>
-            
-            <button 
-                v-else
-                @click="isEditing = true" 
-                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
-            >
-                Edit Profile
-            </button>
-            <button 
-                v-if="!isEditing"
-                @click="refresh" 
-                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-                Refresh Data
-            </button>
-        </div>
-
-        <!-- Posts List -->
         <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-bold mb-4">Posts <small>{{ user.has_posts ? 'has posts' : 'no posts' }}</small></h2>
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">Users</h1>
+                <button 
+                    @click="refresh" 
+                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                >
+                    Refresh List
+                </button>
+            </div>
+
             <div class="space-y-4">
-                <div v-for="post in user.posts" :key="post.id" class="flex justify-between items-center p-4 border rounded">
-                    <div>{{ post.title }}</div>
-                    <button 
-                        @click="removePost(post.id)" 
-                        class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    >
-                        Remove
-                    </button>
+                <div v-for="user in users" :key="user.id" 
+                    class="flex justify-between items-center p-4 border rounded hover:bg-gray-50"
+                >
+                    <div>
+                        <h3 class="font-medium">{{ user.full_name }}</h3>
+                        <p class="text-sm text-gray-600">{{ user.email }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Posts: {{ user.posts_count }}</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <NuxtLink 
+                            :to="`/user/${user.id}`"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        >
+                            View Profile
+                        </NuxtLink>
+                    </div>
                 </div>
-                <div v-if="user.posts.isEmpty()" class="text-gray-500">
-                    No posts found
+                <div v-if="users.isEmpty()" class="text-gray-500 text-center py-4">
+                    No users found
                 </div>
             </div>
         </div>
@@ -81,22 +43,11 @@
 <script setup lang="ts">
 import { make } from 'sutando';
 import User from '~/models/User';
-import Post from '~/models/Post';
-import { modelRef } from '~/utils/model';
 
-const user = modelRef();
-const { data: userData, refresh } = await useFetch('/api/user');
-watch(userData, (newData) => {
-  user.value = make(User, newData);
-}, { immediate: true, deep: true })
+const users = ref();
 
-const isEditing = ref(false);
-
-function updateField(field: string, value: boolean) {
-    user.value[field] = value ? new Date() : null;
-}
-
-function removePost(id: number) {
-    user.value.posts = user.value.posts.filter((post: Post) => post.id !== id);
-}
+const { data: usersData, refresh } = await useFetch('/api/user');
+watch(usersData, (newData) => {
+    users.value = make(User, newData);
+}, { immediate: true, deep: true });
 </script>
