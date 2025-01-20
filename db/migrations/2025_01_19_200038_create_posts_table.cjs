@@ -5,7 +5,7 @@ module.exports = class extends Migration {
    * Run the migrations.
    */
   async up(schema) {
-    await schema.createTable("posts", (table) => {
+    await schema.connection('secondary').createTable("posts", (table) => {
       table.increments("id");
       table.integer("user_id").unsigned().notNullable();
       table.string("title", 30);
@@ -20,6 +20,6 @@ module.exports = class extends Migration {
    * Reverse the migrations.
    */
   async down(schema) {
-    await schema.dropTableIfExists("posts");
+    await schema.connection('secondary').dropTableIfExists("posts");
   }
 };

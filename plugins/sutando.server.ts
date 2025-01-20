@@ -1,9 +1,12 @@
-import { sutando } from 'sutando'
+import { sutando } from 'sutando';
+import config from '../sutando.config.cjs';
 
 export default defineNuxtPlugin(async () => {
     // Add database connection configuration
-    const config = await import('../sutando.config.cjs');
-    sutando.addConnection(config.default)
+    Object.entries(config.connections).forEach(([name, connection]) => {
+        console.log(name, connection);
+        sutando.addConnection(connection, name);
+    });
 
     return {
         provide: {

@@ -1,4 +1,4 @@
-import { Model } from 'sutando';
+import { Attribute, Model } from 'sutando';
 import User from './User';
 
 export default class Post extends Model {
@@ -8,6 +8,14 @@ export default class Post extends Model {
   declare content: string;
   declare created_at: Date;
   declare updated_at: Date;
+
+  override connection = 'secondary';
+
+  attributeWasEdited() {
+    return Attribute.make({
+      get: (value: string, attributes: any) => attributes.updated_at !== attributes.created_at,
+    })
+  }
 
   relationAuthor() {
     return this.belongsTo(User, "user_id");

@@ -9,6 +9,8 @@ export default class User extends Model {
   declare created_at: Date;
   declare updated_at: Date;
 
+  override connection = 'default';
+
   attributeFullName() {
     return Attribute.make({
       get: (value: string, attributes: any) => `${attributes.first_name} ${attributes.last_name}`,
