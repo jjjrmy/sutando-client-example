@@ -9,7 +9,7 @@
     "preview": "nuxt preview",
     "sutando": "sutando",
     "postinstall": "nuxt prepare",
-    "seed": "node --loader ts-node/esm db/seeders/user_posts_seeder.ts"
+    "seed": "tsx db/seeders/user_posts_seeder.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
@@ -22,6 +22,7 @@
     "sutando": "^1.7.0-dev.19"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2"
   }
 }

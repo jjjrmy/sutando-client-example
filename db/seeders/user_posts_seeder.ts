@@ -1,6 +1,10 @@
 import { faker } from '@faker-js/faker';
 import User from '~/models/User';
 import Post from '~/models/Post';
+import config from '../../sutando.config.cjs';
+import { sutando } from 'sutando';
+
+sutando.addConnection(config);
 
 async function seed() {
     try {
@@ -9,7 +13,7 @@ async function seed() {
         // Create 3 users directly in the database
         const users = await Promise.all(
             Array.from({ length: 3 }, async () => {
-                const user = await User.create({
+                const user = await User.query().create({
                     first_name: faker.person.firstName(),
                     last_name: faker.person.lastName(),
                     email: faker.internet.email(),
@@ -29,7 +33,7 @@ async function seed() {
 
             await Promise.all(
                 Array.from({ length: numberOfPosts }, async () => {
-                    await Post.create({
+                    await Post.query().create({
                         user_id: userId,
                         title: faker.lorem.sentence(),
                         content: faker.lorem.paragraphs(3),
