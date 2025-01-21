@@ -21,7 +21,7 @@
                         <p class="text-sm text-gray-600">{{ user.email }}</p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-600">Posts: {{ user.posts_count }}</p>
+                        <p class="text-sm text-gray-600">Posts: {{ user.posts.count() }}</p>
                     </div>
                     <div class="flex space-x-2">
                         <NuxtLink 

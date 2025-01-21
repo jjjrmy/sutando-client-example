@@ -12,7 +12,7 @@ module.exports = class extends Migration {
       table.string("content");
       table.timestamps();
 
-      table.foreign("user_id").references("id").inTable("users");
+      // table.foreign("user_id").references("id").inTable("users");
     });
   }
 

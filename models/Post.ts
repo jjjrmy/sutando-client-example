@@ -9,6 +9,8 @@ export default class Post extends Model {
   declare created_at: Date;
   declare updated_at: Date;
 
+  declare was_edited: boolean;
+
   override connection = 'secondary';
 
   attributeWasEdited() {

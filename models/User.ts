@@ -23,6 +23,12 @@ export default class User extends Model {
     })
   }
 
+  attributeHasEditedPosts() {
+    return Attribute.make({
+      get: (value: string, attributes: any) => (this.getRelation('posts') as Collection<Post>)?.filter((post: Post) => post.was_edited).isNotEmpty(),
+    })
+  }
+
   relationPosts()
   {
     return this.hasMany(Post, "user_id");

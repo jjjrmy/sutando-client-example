@@ -69,20 +69,36 @@
 
         <!-- Posts List -->
         <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-bold mb-4">Posts <small>{{ user.has_posts ? 'has posts' : 'no posts' }}</small></h2>
+            <h2 class="text-xl font-bold mb-4">Posts <small>{{ user.has_edited_posts ? 'has edited posts' : 'no edited posts' }}</small></h2>
             <div class="space-y-4">
-                <div v-for="post in user.posts" :key="post.id" class="flex justify-between items-center p-4 border rounded">
-                    <div>{{ post.title }}</div>
-                    <button 
-                        @click="removePost(post.id)" 
-                        class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    >
-                        Remove
-                    </button>
+                <div v-for="post in user.posts" :key="post.id" class="flex space-x-4 items-center p-4 border rounded">
+                    <NuxtLink :to="`/post/${post.id}`">{{ post.title }}</NuxtLink>
+                    <div class="text-sm text-gray-600">{{ post.was_edited ? 'edited' : 'not edited' }}</div>
+                    <div class="!ml-auto flex space-x-2">
+                        <button 
+                            @click="editPost(post.id)" 
+                            class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                        >
+                            Edit
+                        </button>
+                        <button 
+                            @click="removePost(post.id)" 
+                            class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                        >
+                            Remove
+                        </button>
+                    </div>
+                    
                 </div>
                 <div v-if="user.posts.isEmpty()" class="text-gray-500">
                     No posts found
                 </div>
+                <NuxtLink 
+                    :to="`/post/create?user_id=${user.id}`"
+                    class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                >
+                    Create New Post
+                </NuxtLink>
             </div>
         </div>
     </div>
@@ -130,6 +146,12 @@ async function saveChanges() {
         console.error('Failed to save changes:', error);
         // You might want to add error handling UI here
     }
+}
+
+function editPost(id: number) {
+    const post = user.value.posts.firstWhere('id', id);
+    post.title = 'Edited Title';
+    post.updated_at = new Date();
 }
 
 function removePost(id: number) {
