@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "build:worker": "npx nuxi build --preset=cloudflare_module",
+    "build:pages": "npx nuxi build --preset=cloudflare_pages",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
