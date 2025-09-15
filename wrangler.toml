@@ -1,0 +1,9 @@
+name = "sutando-client-example"
+main = "src/index.ts"
+compatibility_date = "2025-09-11"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "test-sutando"
+database_id = "1e090263-9f81-4fba-a0a6-4bf9cb63b74d"

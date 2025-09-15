@@ -13,13 +13,9 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@libsql/knex-libsql": "^0.1.0",
-    "cloudflare-d1-http-knex": "^1.3.0",
+    "knex-cloudflare-d1": "github:jjjrmy/knex-cloudflare-d1#master",
     "dotenv": "^16.4.7",
-    "mysql2": "^3.12.0",
-    "nuxt": "^3.13.0",
-    "pg": "^8.13.1",
-    "sqlite3": "^5.1.7",
+    "nuxt": "^4.0.0",
     "sutando": "^1.7.0-dev.19"
   },
   "devDependencies": {
