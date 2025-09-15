@@ -16,7 +16,7 @@
     "dotenv": "^16.4.7",
     "knex-cloudflare-d1": "github:jjjrmy/knex-cloudflare-d1#master",
     "nuxt": "^4.0.0",
-    "sutando": "^1.7.0-dev.19"
+    "sutando": "^1.7.2"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",

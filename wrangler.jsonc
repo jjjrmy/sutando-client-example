@@ -1,0 +1,20 @@
+{
+  "name": "sutando-client-example",
+  "main": "./.output/server/index.mjs",
+  "compatibility_date": "2025-09-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./.output/public/"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "test-sutando",
+      "database_id": "1e090263-9f81-4fba-a0a6-4bf9cb63b74d"
+    }
+  ]
+}
