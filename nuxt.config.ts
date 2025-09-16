@@ -33,7 +33,7 @@ export default defineNuxtConfig({
             autoSubfolderIndex: false
         },
         // Debugging: make server bundle readable
-        // minify: false,
-        // sourceMap: true
+        minify: false,
+        sourceMap: true
     }
 })

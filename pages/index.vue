@@ -13,6 +13,9 @@
         </button>
       </div>
 
+      <pre>{{ users }}</pre>
+
+      <!--
       <div class="space-y-4">
         <div
           v-for="user in users"
@@ -41,6 +44,7 @@
           No users found
         </div>
       </div>
+      -->
     </div>
   </div>
 </template>
@@ -52,10 +56,11 @@ import User from "~/models/User";
 const users = ref();
 
 const { data: usersData, refresh } = await useFetch("/api/user");
+console.log("usersData", usersData.value);
 watch(
   usersData,
   (newData) => {
-    users.value = make(User, newData);
+    users.value = newData;
   },
   { immediate: true, deep: true }
 );
