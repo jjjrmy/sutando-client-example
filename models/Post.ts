@@ -11,8 +11,6 @@ export default class Post extends Model {
 
   declare was_edited: boolean;
 
-  override connection = 'secondary';
-
   attributeWasEdited() {
     return Attribute.make({
       get: (value: string, attributes: any) => attributes.updated_at !== attributes.created_at,
