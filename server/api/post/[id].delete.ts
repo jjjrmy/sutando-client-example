@@ -1,4 +1,4 @@
-import Post from '~/models/Post';
+import Post from '../../../models/Post';
 
 export default defineEventHandler(async (event) => {
     const id = event.context.params?.id;

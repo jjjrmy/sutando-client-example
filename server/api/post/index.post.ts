@@ -1,8 +1,8 @@
-import Post from '~/models/Post';
+import Post from '../../../models/Post';
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    
+
     if (!body.user_id || !body.title || !body.content) {
         throw createError({
             statusCode: 400,

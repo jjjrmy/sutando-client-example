@@ -1,7 +1,15 @@
+const isStatic = import.meta.env.NUXT_SSR === 'false';
+
 export default defineNuxtConfig({
     compatibilityDate: '2025-09-11',
     devtools: { enabled: false },
+    ssr: true,
     modules: ["nitro-cloudflare-dev"],
+    runtimeConfig: {
+        public: {
+            apiBaseUrl: isStatic ? process.env.NUXT_PUBLIC_API_BASE : undefined
+        }
+    },
     routeRules: {
         '/api/**': { cors: true }
     },

@@ -1,4 +1,4 @@
-import Post from '~/models/Post';
+import Post from '../../../models/Post';
 
 export default defineEventHandler(async (event) => {
     const id = event.context.params?.id;
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event);
-    
+
     if (!body.title || !body.content) {
         throw createError({
             statusCode: 400,

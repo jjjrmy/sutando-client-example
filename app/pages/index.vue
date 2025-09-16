@@ -18,6 +18,22 @@
           >
             Refresh List
           </button>
+          <button
+            v-if="session"
+            type="button"
+            @click="authClient.signOut()"
+            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            Sign Out
+          </button>
+          <button
+            v-if="!session"
+            type="button"
+            @click="navigateTo('/auth')"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Sign In
+          </button>
         </div>
       </div>
 
@@ -48,6 +64,8 @@
         <div v-if="users.isEmpty()" class="text-gray-500 text-center py-4">
           No users found
         </div>
+
+        <pre>{{ session }}</pre>
       </div>
     </div>
   </div>
@@ -55,7 +73,10 @@
 
 <script setup lang="ts">
 import { make } from "sutando";
-import User from "~/models/User";
+import User from "../../models/User";
+
+const authClient = useAuth();
+const { data: session } = await authClient.useSession(useDynamicFetch);
 
 const users = ref();
 

@@ -1,4 +1,4 @@
-import Post from '~/models/Post';
+import Post from '../../../models/Post';
 
 export default defineEventHandler(async (event) => {
     const id = event.context.params?.id;
@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
             message: 'Post ID is required'
         });
     }
-    
+
     const post = await Post.query()
         .where('id', id)
         .with('author')

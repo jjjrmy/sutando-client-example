@@ -1,17 +1,20 @@
-import { Attribute, Collection, Model } from 'sutando';
+import { Attribute, Model, compose as withTraits, HasUniqueIds, Collection } from 'sutando';
 import Post from './Post';
 
-export default class User extends Model {
-  declare id: number;
-  declare first_name: string;
-  declare last_name: string;
+export default class User extends withTraits(Model, HasUniqueIds) {
+  declare id: string;
+  declare name: string;
   declare email: string;
+  declare emailVerified: boolean;
+  declare image: string;
   declare created_at: Date;
   declare updated_at: Date;
 
+  override connection = 'default';
+
   attributeFullName() {
     return Attribute.make({
-      get: (value: string, attributes: any) => `${attributes.first_name} ${attributes.last_name}`,
+      get: (value: string, attributes: any) => `${attributes.name} ${attributes.name}`,
     })
   }
 
