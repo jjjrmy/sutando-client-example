@@ -6,7 +6,7 @@
     "build": "nuxt build",
     "build:worker": "npx nuxi build --preset=cloudflare_module",
     "build:pages": "npx nuxi build --preset=cloudflare_pages",
-    "deploy:worker": "npx wrangler deploy .output/server/index.mjs --assets .output/public",
+    "deploy:worker": "npx wrangler --cwd .output deploy",
     "deploy:pages": "npx wrangler pages deploy dist",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
