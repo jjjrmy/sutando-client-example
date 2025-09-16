@@ -4,13 +4,21 @@
     <div class="bg-white shadow rounded-lg p-6">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">Users</h1>
-        <button
-          type="button"
-          @click="refresh()"
-          class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Refresh List
-        </button>
+        <div class="flex space-x-2">
+          <NuxtLink
+            to="/user/new"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Create User
+          </NuxtLink>
+          <button
+            type="button"
+            @click="refresh()"
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Refresh List
+          </button>
+        </div>
       </div>
 
       <div class="space-y-4">
@@ -56,7 +64,7 @@ const { data: usersData, refresh } = await useFetch("/api/user");
 watch(
   usersData,
   (newData) => {
-    users.value = make(User, newData);
+    users.value = make(User as any, newData);
   },
   { immediate: true, deep: true }
 );
