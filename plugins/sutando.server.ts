@@ -4,6 +4,7 @@ import config from '../sutando.config.cjs';
 export default defineNuxtPlugin(async () => {
     // Add database connection configuration
     Object.entries(config.connections).forEach(([name, connection]) => {
+        console.log('Adding connection', name, connection);
         sutando.addConnection(connection, name);
     });
 

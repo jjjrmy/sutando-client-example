@@ -4,7 +4,7 @@ const connections = {
   default: {
     client: ClientD1,
     connection: {
-      database: "db",
+      database: "test-sutando",
     },
     useNullAsDefault: true,
   },
