@@ -1,6 +1,7 @@
 export default defineNuxtConfig({
     compatibilityDate: '2025-09-11',
     devtools: { enabled: false },
+    modules: ["nitro-cloudflare-dev"],
     routeRules: {
         '/api/**': { cors: true }
     },
@@ -34,10 +35,10 @@ export default defineNuxtConfig({
     },
     nitro: {
         externals: {
-            external: ['__STATIC_CONTENT_MANIFEST', 'better-sqlite3', 'tedious', 'mysql', 'mysql2', 'oracledb', 'pg', 'sqlite3', 'pg-query-stream'],
+            external: ['__STATIC_CONTENT_MANIFEST'],
         },
         rollupConfig: {
-            external: ['__STATIC_CONTENT_MANIFEST', 'better-sqlite3', 'tedious', 'mysql', 'mysql2', 'oracledb', 'pg', 'sqlite3', 'pg-query-stream'],
+            external: ['__STATIC_CONTENT_MANIFEST'],
             plugins: [
                 {
                     name: 'mock-database-drivers',

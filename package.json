@@ -6,6 +6,8 @@
     "build": "nuxt build",
     "build:worker": "npx nuxi build --preset=cloudflare_module",
     "build:pages": "npx nuxi build --preset=cloudflare_pages",
+    "deploy:worker": "npx wrangler deploy .output/server/index.mjs --assets .output/public",
+    "deploy:pages": "npx wrangler pages deploy dist",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -22,6 +24,7 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "nitro-cloudflare-dev": "^0.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "wrangler": "^4.37.0"
