@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const user = await User.query().where('id', userId).with('posts').first();
-    
+
     if (!user) {
         throw createError({
             statusCode: 404,
@@ -20,4 +20,4 @@ export default defineEventHandler(async (event) => {
     }
 
     return user;
-}); 
+});

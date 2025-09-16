@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
     compatibilityDate: '2025-09-11',
     devtools: { enabled: false },
-    modules: ["nitro-cloudflare-dev"],
+    modules: process.env.NODE_ENV === 'development' ? ["nitro-cloudflare-dev"] : [],
     routeRules: {
         '/api/**': { cors: true }
     },
@@ -14,50 +14,26 @@ export default defineNuxtConfig({
             ]
         }
     },
-    vite: {
-        build: {
-            rollupOptions: {
-                external: ['better-sqlite3', 'tedious', 'mysql', 'mysql2', 'oracledb', 'pg', 'sqlite3', 'pg-query-stream']
-            }
-        },
-        resolve: {
-            alias: {
-                'sqlite3': 'data:text/javascript,export default {}',
-                'better-sqlite3': 'data:text/javascript,export default {}',
-                'pg': 'data:text/javascript,export default {}',
-                'pg-query-stream': 'data:text/javascript,export default {}',
-                'mysql': 'data:text/javascript,export default {}',
-                'mysql2': 'data:text/javascript,export default {}',
-                'oracledb': 'data:text/javascript,export default {}',
-                'tedious': 'data:text/javascript,export default {}'
-            }
-        }
-    },
     nitro: {
         externals: {
-            external: ['__STATIC_CONTENT_MANIFEST'],
+            traceInclude: ["node_modules/knex/knex.js"],
         },
-        rollupConfig: {
-            external: ['__STATIC_CONTENT_MANIFEST'],
-            plugins: [
-                {
-                    name: 'mock-database-drivers',
-                    resolveId(id: string) {
-                        const driverIds = ['sqlite3', 'better-sqlite3', 'pg', 'pg-query-stream', 'mysql', 'mysql2', 'oracledb', 'tedious'];
-                        if (driverIds.includes(id)) {
-                            return { id: 'virtual:' + id, external: false };
-                        }
-                    },
-                    load(id: string) {
-                        if (id.startsWith('virtual:')) {
-                            return 'export default {};';
-                        }
-                    }
-                }
-            ]
+        virtual: {
+            'better-sqlite3': 'export default {}',
+            'tedious': 'export default {}',
+            'mysql': 'export default {}',
+            'mysql2': 'export default {}',
+            'oracledb': 'export default {}',
+            'pg': 'export default {}',
+            'sqlite3': 'export default {}',
+            'pg-query-stream': 'export default {}',
+            'debug': 'export default function createDebug(){return function debug(){}}'
         },
         prerender: {
             autoSubfolderIndex: false
-        }
+        },
+        // Debugging: make server bundle readable
+        // minify: false,
+        // sourceMap: true
     }
 })
