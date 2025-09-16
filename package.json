@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
-    "knex-cloudflare-d1": "github:jjjrmy/knex-cloudflare-d1#master",
+    "knex-cloudflare-d1": "^0.2.0",
     "nuxt": "^4.1.2",
     "sutando": "^1.7.2",
     "vue": "^3.5.21",
