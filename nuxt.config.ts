@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
     compatibilityDate: '2025-09-11',
     devtools: { enabled: false },
-    modules: process.env.NODE_ENV === 'development' ? ["nitro-cloudflare-dev"] : [],
+    modules: ["nitro-cloudflare-dev"],
     routeRules: {
         '/api/**': { cors: true }
     },
@@ -31,9 +31,6 @@ export default defineNuxtConfig({
         },
         prerender: {
             autoSubfolderIndex: false
-        },
-        // Debugging: make server bundle readable
-        minify: false,
-        sourceMap: true
+        }
     }
 })
