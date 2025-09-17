@@ -1,1 +1,1 @@
-export default eventHandler(event => serverAuth(event.context.cloudflare.env.DB).handler(toWebRequest(event)))
+export default eventHandler(event => serverAuth().handler(toWebRequest(event)))

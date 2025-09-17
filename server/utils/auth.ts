@@ -2,14 +2,15 @@ import { betterAuth } from 'better-auth'
 import { D1Dialect } from 'kysely-d1'
 import { phoneNumber } from "better-auth/plugins";
 import User from "../../models/User";
+import { d1Database } from "./db";
 
 let _auth: ReturnType<typeof betterAuth>
-export function serverAuth(db: any) {
+export function serverAuth() {
     if (!_auth) {
         _auth = betterAuth({
             database: {
                 dialect: new D1Dialect({
-                    database: db,
+                    database: d1Database(),
                 }),
                 type: 'sqlite',
             },
