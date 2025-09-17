@@ -16,5 +16,9 @@
       "database_name": "test-sutando",
       "database_id": "1e090263-9f81-4fba-a0a6-4bf9cb63b74d"
     }
-  ]
+  ],
+  "vars": {
+    "NUXT_PUBLIC_API_BASE": "https://sutando-client-example.dventures.workers.dev",
+    "BETTER_AUTH_URL": "https://sutando-client-example.dventures.workers.dev"
+  }
 }
