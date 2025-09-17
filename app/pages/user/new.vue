@@ -62,10 +62,6 @@
 <script setup lang="ts">
 const router = useRouter();
 
-definePageMeta({
-  middleware: ["check-auth"],
-});
-
 const isSubmitting = ref(false);
 const form = reactive({
   first_name: "",

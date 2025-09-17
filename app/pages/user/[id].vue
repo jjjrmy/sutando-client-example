@@ -131,6 +131,10 @@ const user = modelRef();
 const originalUserData = ref(null);
 const isEditing = ref(false);
 
+definePageMeta({
+  auth: false,
+});
+
 const { data: userData, refresh } = await useFetch(
   `/api/user/${route.params.id}`
 );

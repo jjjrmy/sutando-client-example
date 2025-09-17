@@ -1,24 +1,16 @@
 {
   "name": "sutando-client-example",
-  "main": "./.output/server/index.mjs",
   "compatibility_date": "2025-09-11",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true
   },
-  "assets": {
-    "binding": "ASSETS",
-    "directory": "./.output/public/"
-  },
+  "pages_build_output_dir": "./dist",
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "test-sutando",
       "database_id": "1e090263-9f81-4fba-a0a6-4bf9cb63b74d"
     }
-  ],
-  "vars": {
-    // "NUXT_PUBLIC_API_BASE": "https://sutando-client-example.dventures.workers.dev",
-    // "BETTER_AUTH_URL": "https://sutando-client-example.dventures.workers.dev"
-  }
+  ]
 }

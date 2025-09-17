@@ -75,6 +75,10 @@
 import { make } from "sutando";
 import User from "../../models/User";
 
+definePageMeta({
+  auth: false,
+});
+
 const { user, client } = useAuth();
 
 const users = ref();

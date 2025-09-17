@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+definePageMeta({
+  auth: false,
+});
+
 const phoneNumber = ref("+14079538970"); // TODO: should be null
 const otpCode = ref("");
 const isOtpSent = ref(false);
@@ -8,7 +12,7 @@ const loading = ref(false);
 const error = ref("");
 const success = ref(false);
 
-const authClient = useAuth();
+const { client: authClient } = useAuth();
 
 const handlePhoneSubmit = async () => {
   loading.value = true;
