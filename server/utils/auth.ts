@@ -1,5 +1,5 @@
-import { betterAuth } from 'better-auth'
-import { D1Dialect } from 'kysely-d1'
+import { betterAuth } from 'better-auth';
+import { D1Dialect } from '@atinux/kysely-d1';
 import { phoneNumber } from "better-auth/plugins";
 import User from "../../models/User";
 import { d1Database } from "./db";
