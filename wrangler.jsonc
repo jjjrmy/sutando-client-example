@@ -1,11 +1,23 @@
 {
   "name": "sutando-client-example",
+  /*
+  // FOR WORKERS
+  "main": "./.output/server/index.mjs",
+  */
   "compatibility_date": "2025-09-11",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true
   },
+  // FOR PAGES
   "pages_build_output_dir": "./dist",
+  /*
+  // FOR WORKERS
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./.output/public/"
+  },
+  */
   "d1_databases": [
     {
       "binding": "DB",
