@@ -14,6 +14,14 @@ const success = ref(false);
 
 const { client: authClient } = useAuth();
 
+const signInWithApple = async () => {
+  const { data, error: authError } = await authClient.signIn.social({
+    provider: "apple",
+  });
+  if (authError) throw authError;
+  console.log(data);
+};
+
 const handlePhoneSubmit = async () => {
   loading.value = true;
   error.value = "";
@@ -129,6 +137,8 @@ const handleOtpSubmit = async () => {
             Back to Phone Entry
           </button>
         </form>
+
+        <button @click="signInWithApple">Sign in with Apple</button>
 
         <div v-if="error" class="mt-5 p-2.5 bg-red-50 text-red-700 rounded-md">
           {{ error }}

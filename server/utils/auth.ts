@@ -53,6 +53,14 @@ export function serverAuth() {
             emailAndPassword: {
                 enabled: true,
             },
+            socialProviders: {
+                apple: {
+                    clientId: process.env.APPLE_CLIENT_ID as string,
+                    clientSecret: process.env.APPLE_CLIENT_SECRET as string,
+                    // Optional
+                    // appBundleIdentifier: process.env.APPLE_APP_BUNDLE_IDENTIFIER as string,
+                },
+            },
             plugins: [
                 phoneNumber({
                     schema: {
