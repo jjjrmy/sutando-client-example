@@ -7,7 +7,10 @@ export default defineNuxtConfig({
     modules: ["nitro-cloudflare-dev"],
     runtimeConfig: {
         public: {
-            apiBaseUrl: isStatic ? process.env.NUXT_PUBLIC_API_BASE : undefined
+            auth: {
+                redirectUserTo: '/dashboard',
+                redirectGuestTo: '/',
+            },
         }
     },
     routeRules: {
@@ -36,9 +39,6 @@ export default defineNuxtConfig({
             'sqlite3': 'export default {}',
             'pg-query-stream': 'export default {}',
             'debug': 'export default function createDebug(){return function debug(){}}'
-        },
-        prerender: {
-            autoSubfolderIndex: false
         }
     }
 })

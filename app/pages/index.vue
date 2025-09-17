@@ -19,15 +19,15 @@
             Refresh List
           </button>
           <button
-            v-if="session"
+            v-if="user"
             type="button"
-            @click="authClient.signOut()"
+            @click="client.signOut()"
             class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           >
             Sign Out
           </button>
           <button
-            v-if="!session"
+            v-if="!user"
             type="button"
             @click="navigateTo('/auth')"
             class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -65,7 +65,7 @@
           No users found
         </div>
 
-        <pre>{{ session }}</pre>
+        <pre>{{ user }}</pre>
       </div>
     </div>
   </div>
@@ -75,8 +75,7 @@
 import { make } from "sutando";
 import User from "../../models/User";
 
-const authClient = useAuth();
-const { data: session } = await authClient.useSession(useDynamicFetch);
+const { user, client } = useAuth();
 
 const users = ref();
 

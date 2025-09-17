@@ -1,6 +1,1 @@
-import useAuth from "../../utils/auth";
-
-export default defineEventHandler((event) => {
-    return useAuth(event.context.cloudflare.env.DB)
-        .handler(toWebRequest(event));
-});
+export default eventHandler(event => serverAuth(event.context.cloudflare.env.DB).handler(toWebRequest(event)))
