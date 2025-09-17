@@ -22,6 +22,14 @@ const signInWithApple = async () => {
   console.log(data);
 };
 
+const signInWithGithub = async () => {
+  const { data, error: authError } = await authClient.signIn.social({
+    provider: "github",
+  });
+  if (authError) throw authError;
+  console.log(data);
+};
+
 const handlePhoneSubmit = async () => {
   loading.value = true;
   error.value = "";
@@ -138,7 +146,20 @@ const handleOtpSubmit = async () => {
           </button>
         </form>
 
-        <button @click="signInWithApple">Sign in with Apple</button>
+        <div class="mt-5 flex flex-col gap-3">
+          <button
+            @click="signInWithGithub"
+            class="w-full p-2.5 bg-gray-800 text-white rounded-md hover:bg-gray-900 focus:ring-2 focus:ring-gray-300 flex items-center justify-center gap-2"
+          >
+            Sign in with Github
+          </button>
+          <button
+            @click="signInWithApple"
+            class="w-full p-2.5 bg-black text-white rounded-md hover:bg-gray-900 focus:ring-2 focus:ring-gray-300 flex items-center justify-center gap-2"
+          >
+            Sign in with Apple
+          </button>
+        </div>
 
         <div v-if="error" class="mt-5 p-2.5 bg-red-50 text-red-700 rounded-md">
           {{ error }}
