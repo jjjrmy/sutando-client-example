@@ -6,8 +6,8 @@ module.exports = class extends Migration {
    */
   async up(schema) {
     await schema.table("users", (table) => {
-      table.string("phone_number").nullable();
-      table.boolean("phone_number_verified").defaultTo(false);
+      table.string("phoneNumber").nullable();
+      table.boolean("phoneNumberVerified").defaultTo(false);
     });
   }
 
@@ -16,8 +16,8 @@ module.exports = class extends Migration {
    */
   async down(schema) {
     await schema.table("users", (table) => {
-      table.dropColumn("phone_number");
-      table.dropColumn("phone_number_verified");
+      table.dropColumn("phoneNumber");
+      table.dropColumn("phoneNumberVerified");
     });
   }
 };

@@ -9,10 +9,10 @@ module.exports = class extends Migration {
       table.string("id").primary().notNullable();
       table.string("name").notNullable();
       table.string("email").notNullable().unique();
-      table.integer("email_verified").notNullable();
+      table.integer("emailVerified").notNullable();
       table.string("image");
-      table.date("created_at").notNullable();
-      table.date("updated_at").notNullable();
+      table.date("createdAt").notNullable();
+      table.date("updatedAt").notNullable();
     });
   }
 

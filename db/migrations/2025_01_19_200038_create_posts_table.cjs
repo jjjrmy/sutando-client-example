@@ -1,4 +1,4 @@
-const { Migration, sutando } = require("sutando");
+const { Migration } = require("sutando");
 
 module.exports = class extends Migration {
   /**
@@ -7,12 +7,15 @@ module.exports = class extends Migration {
   async up(schema) {
     await schema.createTable("posts", (table) => {
       table.increments("id");
-      table.integer("user_id").unsigned().notNullable();
+      table
+        .string("user_id")
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
       table.string("title", 30);
       table.string("content");
       table.timestamps();
-
-      // table.foreign("user_id").references("id").inTable("users");
     });
   }
 
@@ -20,6 +23,11 @@ module.exports = class extends Migration {
    * Reverse the migrations.
    */
   async down(schema) {
+    // Drop foreign key constraints first
+    await schema.table("posts", (table) => {
+      table.dropForeign(["user_id"]);
+    });
+    // Then drop the table
     await schema.dropTableIfExists("posts");
   }
 };

@@ -7,8 +7,11 @@ export default class User extends withTraits(Model, HasUniqueIds) {
   declare email: string;
   declare emailVerified: boolean;
   declare image: string;
-  declare created_at: Date;
-  declare updated_at: Date;
+  declare createdAt: Date;
+  declare updatedAt: Date;
+
+  static UPDATED_AT = "updatedAt";
+  static CREATED_AT = "createdAt";
 
   override connection = 'default';
 

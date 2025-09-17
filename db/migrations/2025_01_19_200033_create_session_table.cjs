@@ -5,16 +5,16 @@ module.exports = class extends Migration {
    * Run the migrations.
    */
   async up(schema) {
-    await schema.createTable("sessions", (table) => {
+    await schema.createTable("session", (table) => {
       table.string("id").primary().notNullable();
-      table.date("expires_at").notNullable();
+      table.date("expiresAt").notNullable();
       table.string("token").notNullable().unique();
-      table.date("created_at").notNullable();
-      table.date("updated_at").notNullable();
+      table.date("createdAt").notNullable();
+      table.date("updatedAt").notNullable();
       table.string("ip_address");
-      table.string("user_agent");
+      table.string("userAgent");
       table
-        .string("user_id")
+        .string("userId")
         .notNullable()
         .references("id")
         .inTable("users")
@@ -27,10 +27,10 @@ module.exports = class extends Migration {
    */
   async down(schema) {
     // Drop foreign key constraints first
-    await schema.table("sessions", (table) => {
-      table.dropForeign(["user_id"]);
+    await schema.table("session", (table) => {
+      table.dropForeign(["userId"]);
     });
     // Then drop the table
-    await schema.dropTableIfExists("sessions");
+    await schema.dropTableIfExists("session");
   }
 };
