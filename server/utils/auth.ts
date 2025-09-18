@@ -1,22 +1,18 @@
 import { betterAuth } from 'better-auth';
-import { D1Dialect } from '@atinux/kysely-d1';
+import { sutandoAdapter } from "../../db/adapter/sutando";
 import { phoneNumber } from "better-auth/plugins";
 import User from "../../models/User";
-import { d1Database } from "./db";
 
 let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
     if (!_auth) {
         _auth = betterAuth({
-            database: {
-                dialect: new D1Dialect({
-                    database: d1Database(),
-                }),
-                type: 'sqlite',
-            },
+            database: sutandoAdapter({
+                useTransactions: false,
+                debugLogs: process.env.NODE_ENV === 'development',
+            }),
             baseURL: getBaseURL(),
             user: {
-                table: "users",
                 modelName: "users",
             },
             account: {
@@ -44,10 +40,6 @@ export function serverAuth() {
                     schema: {
                         user: {
                             modelName: "users",
-                            fields: {
-                                phoneNumber: "phone_number",
-                                phoneNumberVerified: "phone_number_verified",
-                            },
                         },
                     },
                     sendOTP: async ({ phoneNumber, code }) => {

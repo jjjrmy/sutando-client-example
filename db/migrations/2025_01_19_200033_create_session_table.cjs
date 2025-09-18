@@ -11,7 +11,7 @@ module.exports = class extends Migration {
       table.string("token").notNullable().unique();
       table.date("createdAt").notNullable();
       table.date("updatedAt").notNullable();
-      table.string("ip_address");
+      table.string("ipAddress");
       table.string("userAgent");
       table
         .string("userId")
