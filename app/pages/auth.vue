@@ -30,6 +30,14 @@ const signInWithGithub = async () => {
   console.log(data);
 };
 
+const signInWithGoogle = async () => {
+  const { data, error: authError } = await authClient.signIn.social({
+    provider: "google",
+  });
+  if (authError) throw authError;
+  console.log(data);
+};
+
 const handlePhoneSubmit = async () => {
   loading.value = true;
   error.value = "";
@@ -158,6 +166,12 @@ const handleOtpSubmit = async () => {
             class="w-full p-2.5 bg-black text-white rounded-md hover:bg-gray-900 focus:ring-2 focus:ring-gray-300 flex items-center justify-center gap-2"
           >
             Sign in with Apple
+          </button>
+          <button
+            @click="signInWithGoogle"
+            class="w-full p-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-300 flex items-center justify-center gap-2"
+          >
+            Sign in with Google
           </button>
         </div>
 
