@@ -12,31 +12,28 @@
       <!-- Profile Info -->
       <div class="mb-4">
         <p><strong>ID:</strong> {{ user.id }}</p>
-        <p><strong>Full Name:</strong> {{ user.full_name }}</p>
-        <p><strong>Created:</strong> {{ user.created_at?.toLocaleString() }}</p>
-        <p><strong>Updated:</strong> {{ user.updated_at?.toLocaleString() }}</p>
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Created:</strong> {{ user.createdAt?.toLocaleString() }}</p>
+        <p><strong>Updated:</strong> {{ user.updatedAt?.toLocaleString() }}</p>
       </div>
 
       <!-- Edit Form -->
       <div v-if="isEditing" class="mb-4">
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >First Name</label
-            >
+            <label class="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
-              v-model="user.first_name"
+              v-model="user.name"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Last Name</label
-            >
+            <label class="block text-sm font-medium text-gray-700">Email</label>
             <input
-              type="text"
-              v-model="user.last_name"
+              type="email"
+              v-model="user.email"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           </div>
@@ -65,7 +62,7 @@
           Edit Profile
         </button>
         <button
-          @click="refresh"
+          @click="refresh()"
           class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
         >
           Refresh Data
@@ -161,8 +158,7 @@ async function saveChanges() {
     await $fetch(`/api/user/${user.value.id}`, {
       method: "PUT",
       body: {
-        first_name: user.value.first_name,
-        last_name: user.value.last_name,
+        name: user.value.name,
         email: user.value.email,
       },
     });

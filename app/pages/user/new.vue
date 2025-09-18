@@ -11,22 +11,10 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700"
-            >First Name</label
-          >
+          <label class="block text-sm font-medium text-gray-700">Name</label>
           <input
             type="text"
-            v-model="form.first_name"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700"
-            >Last Name</label
-          >
-          <input
-            type="text"
-            v-model="form.last_name"
+            v-model="form.name"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           />
         </div>
@@ -64,8 +52,7 @@ const router = useRouter();
 
 const isSubmitting = ref(false);
 const form = reactive({
-  first_name: "",
-  last_name: "",
+  name: "",
   email: "",
 });
 
@@ -75,8 +62,7 @@ async function createUser() {
     const created = await $fetch("/api/user", {
       method: "POST",
       body: {
-        first_name: form.first_name,
-        last_name: form.last_name,
+        name: form.name,
         email: form.email,
       },
     });

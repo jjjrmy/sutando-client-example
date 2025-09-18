@@ -17,7 +17,7 @@ export default class User extends withTraits(Model, HasUniqueIds) {
 
   attributeFullName() {
     return Attribute.make({
-      get: (value: string, attributes: any) => `${attributes.name} ${attributes.name}`,
+      get: (value: string, attributes: any) => attributes.name,
     })
   }
 
