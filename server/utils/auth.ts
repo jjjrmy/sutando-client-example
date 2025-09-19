@@ -18,6 +18,8 @@ export function serverAuth() {
             account: {
                 accountLinking: {
                     enabled: true,
+                    trustedProviders: ["apple", "google"],
+                    allowDifferentEmails: true,
                 },
             },
             emailAndPassword: {
