@@ -93,7 +93,7 @@ if (isNew.value) {
 async function savePost() {
   try {
     if (isNew.value) {
-      await $fetch("/api/post", {
+      await useDynamicFetch("/api/post", {
         method: "POST",
         body: {
           user_id: post.value.user_id,
@@ -102,7 +102,7 @@ async function savePost() {
         },
       });
     } else {
-      await $fetch(`/api/post/${post.value.id}`, {
+      await useDynamicFetch(`/api/post/${post.value.id}`, {
         method: "PUT",
         body: {
           title: post.value.title,
@@ -123,7 +123,7 @@ async function deletePost() {
   }
 
   try {
-    await $fetch(`/api/post/${post.value.id}`, {
+    await useDynamicFetch(`/api/post/${post.value.id}`, {
       method: "DELETE",
     });
     router.push(`/user/${post.value.user_id}`);

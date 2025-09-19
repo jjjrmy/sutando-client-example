@@ -8,6 +8,12 @@ export const useDynamicFetch = <T>(request: Parameters<typeof useFetch<T>>[0], o
         ...(opts as any),
         baseURL: (opts as any).baseURL ?? config.public.apiBaseUrl,
         credentials: 'include',
+        ...(config.public.isMobile ? {
+            headers: {
+                ...((opts as any).headers || {}),
+                Authorization: `Bearer ${localStorage.getItem("bearer_token") || ""}`
+            },
+        } : {}),
     } as any;
 
     return useFetch<T>(request as any, mergedOptions);

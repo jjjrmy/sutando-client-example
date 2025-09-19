@@ -10,6 +10,13 @@ export default defineNuxtConfig({
     ssr: isSSR,
     css: ['~/assets/css/main.css'],
     modules: ["nitro-cloudflare-dev", 'nuxt-security'],
+    app: {
+        head: {
+            meta: [
+                { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' }
+            ]
+        }
+    },
     runtimeConfig: {
         public: {
             apiBaseUrl: isSSR ? undefined : process.env.API_BASE_URL,

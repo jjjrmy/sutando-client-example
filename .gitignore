@@ -9,3 +9,4 @@ node_modules
 dist
 .wrangler
 *secrets.json
+*.pem

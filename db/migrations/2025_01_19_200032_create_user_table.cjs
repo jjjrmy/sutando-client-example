@@ -9,7 +9,7 @@ module.exports = class extends Migration {
       table.string("id").primary().notNullable();
       table.string("name").notNullable();
       table.string("email").notNullable().unique();
-      table.integer("emailVerified").notNullable();
+      table.integer("emailVerified").defaultTo(false).notNullable();
       table.string("image");
       table.date("createdAt").notNullable();
       table.date("updatedAt").notNullable();

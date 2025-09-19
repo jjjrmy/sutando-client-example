@@ -59,7 +59,7 @@ const form = reactive({
 async function createUser() {
   try {
     isSubmitting.value = true;
-    const created = await $fetch("/api/user", {
+    const created = await useDynamicFetch("/api/user", {
       method: "POST",
       body: {
         name: form.name,

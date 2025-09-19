@@ -1,4 +1,5 @@
 import { Attribute, Model, compose as withTraits, HasUniqueIds, Collection } from 'sutando';
+import { v4 as uuidv4 } from 'uuid';
 import Post from './Post';
 
 export default class User extends withTraits(Model, HasUniqueIds) {
@@ -14,6 +15,10 @@ export default class User extends withTraits(Model, HasUniqueIds) {
   static CREATED_AT = "createdAt";
 
   override connection = 'default';
+
+  override newUniqueId() {
+    return uuidv4();
+  }
 
   attributeFullName() {
     return Attribute.make({

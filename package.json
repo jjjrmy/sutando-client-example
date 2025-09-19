@@ -32,6 +32,8 @@
     "nuxt-security": "^2.4.0",
     "sutando": "^1.7.2",
     "tailwindcss": "^4.1.13",
+    "tailwindcss-safe-area": "^1.1.0",
+    "uuid": "^13.0.0",
     "vue": "^3.5.21",
     "vue-router": "^4.5.1"
   },
