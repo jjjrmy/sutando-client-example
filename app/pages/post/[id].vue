@@ -78,7 +78,9 @@ if (isNew.value) {
     content: "",
   });
 } else {
-  const { data: postData } = await useFetch(`/api/post/${route.params.id}`);
+  const { data: postData } = await useDynamicFetch(
+    `/api/post/${route.params.id}`
+  );
   watch(
     postData,
     (newData) => {

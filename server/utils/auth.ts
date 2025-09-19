@@ -1,15 +1,16 @@
 import { betterAuth } from 'better-auth';
 import { sutandoAdapter } from "../../db/adapter/sutando";
-import { phoneNumber } from "better-auth/plugins";
+import { bearer, phoneNumber } from "better-auth/plugins";
 import User from "../../models/User";
 
 let _auth: ReturnType<typeof betterAuth>
 export function serverAuth() {
     if (!_auth) {
         _auth = betterAuth({
+            trustedOrigins: ['http://localhost:3000', 'https://localhost:3000', 'https://192.168.0.122:3000', 'http://localhost:3001', 'capacitor://localhost'],
             database: sutandoAdapter({
                 useTransactions: false,
-                debugLogs: process.env.NODE_ENV === 'development',
+                debugLogs: false, // process.env.NODE_ENV === 'development',
             }),
             baseURL: getBaseURL(),
             user: {
@@ -42,6 +43,7 @@ export function serverAuth() {
                 },
             },
             plugins: [
+                bearer(),
                 phoneNumber({
                     schema: {
                         user: {

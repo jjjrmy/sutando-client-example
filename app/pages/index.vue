@@ -83,7 +83,7 @@ const { user, client } = useAuth();
 
 const users = ref();
 
-const { data: usersData, refresh } = await useFetch("/api/user");
+const { data: usersData, refresh } = await useDynamicFetch("/api/user");
 
 watch(
   usersData,

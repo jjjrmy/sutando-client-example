@@ -16,12 +16,27 @@ interface RuntimeAuthConfig {
 
 export function useAuth() {
     const url = useRequestURL()
+    const config = useRuntimeConfig()
     const headers = import.meta.server ? useRequestHeaders() : undefined
 
     const client = createAuthClient({
         baseURL: url.origin,
         fetchOptions: {
+            ...(config.public.apiBaseUrl !== undefined && config.public.apiBaseUrl !== "" ? { baseURL: `${config.public.apiBaseUrl}/api/auth` } : {}),
             headers,
+            ...(config.public.isMobile ? {
+                auth: {
+                    type: "Bearer",
+                    token: () => localStorage.getItem("bearer_token") || "" // get the token from localStorage
+                },
+                onSuccess: (ctx) => {
+                    const authToken = ctx.response.headers.get("set-auth-token") // get the token from the response headers
+                    // Store the token securely (e.g., in localStorage)
+                    if (authToken) {
+                        localStorage.setItem("bearer_token", authToken);
+                    }
+                }
+            } : {}),
         },
         plugins: [
             phoneNumberClient()
@@ -44,6 +59,7 @@ export function useAuth() {
         sessionFetching.value = true
         const { data } = await client.getSession({
             fetchOptions: {
+                ...(config.public.apiBaseUrl !== undefined && config.public.apiBaseUrl !== "" ? { baseURL: `${config.public.apiBaseUrl}/api/auth` } : {}),
                 headers,
             },
         })

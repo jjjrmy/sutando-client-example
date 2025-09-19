@@ -132,7 +132,7 @@ definePageMeta({
   auth: false,
 });
 
-const { data: userData, refresh } = await useFetch(
+const { data: userData, refresh } = await useDynamicFetch(
   `/api/user/${route.params.id}`
 );
 watch(
