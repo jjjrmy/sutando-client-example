@@ -59,14 +59,15 @@ const form = reactive({
 async function createUser() {
   try {
     isSubmitting.value = true;
-    const created = await useDynamicFetch("/api/user", {
+    const { data: created } = await useDynamicFetch("/api/user", {
       method: "POST",
       body: {
         name: form.name,
         email: form.email,
       },
     });
-    const id = (created as any)?.id;
+
+    const id = (created.value as any)?.id;
     if (id) {
       await router.push(`/user/${id}`);
     }
