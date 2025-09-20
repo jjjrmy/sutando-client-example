@@ -5,6 +5,7 @@ const connections = {
     client: ClientD1,
     connection: {
       database: "test-sutando",
+      binding: "DB",
       // remote: true, // this needs to be true for remote
     },
     useNullAsDefault: true,
