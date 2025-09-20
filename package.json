@@ -21,6 +21,7 @@
     "seed": "tsx db/seeders/user_posts_seeder.ts"
   },
   "dependencies": {
+    "@capacitor-community/apple-sign-in": "^7.0.1",
     "@capacitor/core": "^7.4.3",
     "@capacitor/ios": "^7.4.3",
     "@faker-js/faker": "^8.4.1",

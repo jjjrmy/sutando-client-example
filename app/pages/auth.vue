@@ -1,9 +1,25 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+  SignInWithApple,
+  type SignInWithAppleResponse,
+  type SignInWithAppleOptions,
+} from "@capacitor-community/apple-sign-in";
 
 definePageMeta({
   auth: false,
 });
+
+const options: SignInWithAppleOptions = {
+  clientId: "tech.infolink.charts.app",
+  redirectURI: "https://localhost:3000/auth",
+  scopes: "email name",
+  /*
+  nonce:
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15),
+  */
+};
 
 const phoneNumber = ref("+14079538970"); // TODO: should be null
 const otpCode = ref("");
@@ -20,6 +36,25 @@ const signInWithApple = async () => {
   });
   if (authError) throw authError;
   console.log(data);
+};
+
+const signInWithAppleNative = async () => {
+  SignInWithApple.authorize(options)
+    .then(async (result: SignInWithAppleResponse) => {
+      console.log(result);
+      const { data, error: authError } = await authClient.signIn.social({
+        provider: "apple",
+        idToken: {
+          token: result.response.identityToken,
+          // nonce: options.nonce,
+        },
+      });
+      if (authError) throw authError;
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 const signInWithGithub = async () => {
@@ -165,7 +200,13 @@ const handleOtpSubmit = async () => {
             @click="signInWithApple"
             class="w-full p-2.5 bg-black text-white rounded-md hover:bg-gray-900 focus:ring-2 focus:ring-gray-300 flex items-center justify-center gap-2"
           >
-            Sign in with Apple
+            Sign in with Apple Web
+          </button>
+          <button
+            @click="signInWithAppleNative"
+            class="w-full p-2.5 bg-black text-white rounded-md hover:bg-gray-900 focus:ring-2 focus:ring-gray-300 flex items-center justify-center gap-2"
+          >
+            Sign in with Apple Native
           </button>
           <button
             @click="signInWithGoogle"
@@ -191,6 +232,13 @@ const handleOtpSubmit = async () => {
             </a>
           </p>
         </div>
+
+        <NuxtLink
+          to="/"
+          class="text-blue-600 underline ml-1 hover:text-blue-800"
+        >
+          Back to Home
+        </NuxtLink>
       </template>
     </div>
   </div>

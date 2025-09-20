@@ -32,8 +32,7 @@ export function serverAuth() {
                 apple: {
                     clientId: process.env.APPLE_CLIENT_ID as string,
                     clientSecret: process.env.APPLE_CLIENT_SECRET as string,
-                    // Optional
-                    // appBundleIdentifier: process.env.APPLE_APP_BUNDLE_IDENTIFIER as string,
+                    appBundleIdentifier: process.env.APPLE_APP_BUNDLE_IDENTIFIER as string,
                 },
                 github: {
                     clientId: process.env.GITHUB_CLIENT_ID as string,
