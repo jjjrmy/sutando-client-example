@@ -4,6 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 const isSSR = import.meta.env.NUXT_SSR != 'false';
 const isSSL = import.meta.env.NUXT_SSL == 'true';
 
+import appConfig from "./capacitor.config";
+
 export default defineNuxtConfig({
     compatibilityDate: '2025-09-11',
     devtools: { enabled: false },
@@ -19,7 +21,9 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            apiBaseUrl: isSSR ? undefined : process.env.API_BASE_URL,
+            appUrl: process.env.APP_URL,
+            appIdentifier: appConfig.appId,
+            apiBaseUrl: isSSR ? undefined : process.env.APP_URL,
             isMobile: import.meta.env.NUXT_MOBILE == 'true',
             auth: {
                 redirectUserTo: '/dashboard',
