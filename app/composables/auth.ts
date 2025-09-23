@@ -7,6 +7,7 @@ import type {
 } from 'better-auth/client'
 import { phoneNumberClient } from 'better-auth/client/plugins'
 import type { RouteLocationRaw } from 'vue-router'
+import { stripeClient } from "@better-auth/stripe/client"
 
 
 interface RuntimeAuthConfig {
@@ -39,7 +40,10 @@ export function useAuth() {
             } : {}),
         },
         plugins: [
-            phoneNumberClient()
+            phoneNumberClient(),
+            stripeClient({
+                subscription: true //if you want to enable subscription management
+            })
         ]
     })
 

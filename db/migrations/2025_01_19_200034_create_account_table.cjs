@@ -22,8 +22,7 @@ module.exports = class extends Migration {
       table.date("refreshTokenExpiresAt");
       table.string("scope");
       table.string("password");
-      table.date("createdAt").notNullable();
-      table.date("updatedAt").notNullable();
+      table.timestamps(true, true, true);
     });
   }
 

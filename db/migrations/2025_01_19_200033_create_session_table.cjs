@@ -9,8 +9,7 @@ module.exports = class extends Migration {
       table.string("id").primary().notNullable();
       table.date("expiresAt").notNullable();
       table.string("token").notNullable().unique();
-      table.date("createdAt").notNullable();
-      table.date("updatedAt").notNullable();
+      table.timestamps(true, true, true);
       table.string("ipAddress");
       table.string("userAgent");
       table

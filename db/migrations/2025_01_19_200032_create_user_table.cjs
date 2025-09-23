@@ -11,8 +11,7 @@ module.exports = class extends Migration {
       table.string("email").notNullable().unique();
       table.integer("emailVerified").defaultTo(false).notNullable();
       table.string("image");
-      table.date("createdAt").notNullable();
-      table.date("updatedAt").notNullable();
+      table.timestamps(true, true, true);
     });
   }
 

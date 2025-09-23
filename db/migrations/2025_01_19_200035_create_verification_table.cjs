@@ -10,8 +10,7 @@ module.exports = class extends Migration {
       table.string("identifier").notNullable();
       table.string("value").notNullable();
       table.date("expiresAt").notNullable();
-      table.date("createdAt").notNullable();
-      table.date("updatedAt").notNullable();
+      table.timestamps(true, true, true);
     });
   }
 

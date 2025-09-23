@@ -68,6 +68,8 @@
         <pre>{{ user }}</pre>
       </div>
     </div>
+
+    <NuxtLink to="/products">Products</NuxtLink>
   </div>
 </template>
 
