@@ -71,15 +71,25 @@ export function serverAuth() {
                         plans: [
                             {
                                 name: "basic", // the name of the plan, it'll be automatically lower cased when stored in the database
-                                priceId: "price_1SAMCqJqchVnnn7KPt4Mzv8M", // the price ID from stripe
+                                priceId: "price_1SAclCJqchVnnn7K8rTDfTXT", // the price ID from stripe
                                 // annualDiscountPriceId: "price_1234567890", // (optional) the price ID for annual billing with a discount
                                 limits: {
                                     projects: 5,
                                     storage: 10
                                 }
                             },
-                        ]
-                    }
+                        ],
+                        getCheckoutSessionParams: async () => ({
+                            params: {
+                                origin_context: "mobile_app",
+                                custom_text: {
+                                    submit: {
+                                        message: "We'll start your subscription right away"
+                                    }
+                                },
+                            },
+                        })
+                    },
                 }),
                 phoneNumber({
                     schema: {

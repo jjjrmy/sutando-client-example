@@ -12,7 +12,7 @@ const upgrade = async () => {
     successUrl: `${config.public.appUrl}/products?success=true`, // required
     cancelUrl: `${config.public.appUrl}/products?cancel=true`, // required
     returnUrl: `${config.public.appUrl}/products?return=true`,
-    disableRedirect: true, // required
+    disableRedirect: false, // required
   });
 };
 </script>
