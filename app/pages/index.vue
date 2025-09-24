@@ -66,6 +66,8 @@
         </div>
 
         <pre>{{ user }}</pre>
+
+        <pre>{{ subscriptions }}</pre>
       </div>
     </div>
 
@@ -82,6 +84,8 @@ definePageMeta({
 });
 
 const { user, client } = useAuth();
+
+const { data: subscriptions } = await client.subscription.list();
 
 const users = ref();
 

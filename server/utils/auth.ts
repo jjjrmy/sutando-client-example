@@ -170,14 +170,16 @@ function getBaseURL() {
     return baseURL
 }
 
-export const getAuthSession = async (event: H3Event) => {
+export const getAuthSession = async () => {
+    const event = useEvent();
     return await serverAuth().api.getSession({
         headers: event.headers
     });
 }
 
-export const requireAuth = async (event: H3Event) => {
-    const session = await getAuthSession(event);
+export const requireAuth = async () => {
+    const event = useEvent();
+    const session = await getAuthSession();
     if (!session || !session.user) {
         throw createError({
             statusCode: 401,

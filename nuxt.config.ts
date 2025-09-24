@@ -37,6 +37,9 @@ export default defineNuxtConfig({
         ],
     },
     nitro: {
+        experimental: {
+            asyncContext: true,
+        },
         externals: {
             traceInclude: ["node_modules/knex/knex.js"],
         },
