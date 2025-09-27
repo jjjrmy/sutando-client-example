@@ -72,6 +72,7 @@
     </div>
 
     <NuxtLink to="/products">Products</NuxtLink>
+    <NuxtLink to="/dashboard">Dashboard</NuxtLink>
   </div>
 </template>
 

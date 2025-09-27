@@ -1,6 +1,7 @@
 import { Attribute, Model, compose as withTraits, HasUniqueIds, Collection } from 'sutando';
 import { v4 as uuidv4 } from 'uuid';
 import Post from './Post';
+import ContactMethod from './ContactMethod';
 
 export default class User extends withTraits(Model, HasUniqueIds) {
   declare id: string;
@@ -40,5 +41,9 @@ export default class User extends withTraits(Model, HasUniqueIds) {
 
   relationPosts() {
     return this.hasMany(Post, "user_id");
+  }
+
+  relationContactMethods() {
+    return this.hasMany(ContactMethod, "user_id");
   }
 }
