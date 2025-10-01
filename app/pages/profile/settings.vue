@@ -267,9 +267,9 @@ const config = useRuntimeConfig();
 const isNative = Capacitor.isNativePlatform();
 
 // Fetch full user data from the API endpoint
-const { data: userData, error: userError } = await useDynamicFetch<
-  Record<string, any>
->(`/api/user/${authUser.value?.id}`);
+const { data: userData, error: userError } = await useDynamicFetch<User>(
+  `/api/user/${authUser.value?.id}`
+);
 
 // Convert API response to Sutando model
 const user = computed((): User | undefined => {

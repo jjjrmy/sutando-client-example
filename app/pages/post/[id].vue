@@ -56,9 +56,9 @@ const route = useRoute();
 const postId = route.params.id;
 
 // Fetch post from the API
-const { data: postData, error: postError } = await useDynamicFetch<
-  Record<string, any>
->(`/api/post/${postId}`);
+const { data: postData, error: postError } = await useDynamicFetch<Post>(
+  `/api/post/${postId}`
+);
 
 // Convert API response to Sutando model
 const post = computed((): Post | undefined => {

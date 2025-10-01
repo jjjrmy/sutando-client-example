@@ -110,7 +110,7 @@ definePageMeta({
 const { user } = useAuth();
 
 // Fetch user data from the API for the current user
-const { data: profileUserData } = await useDynamicFetch<Record<string, any>>(
+const { data: profileUserData } = await useDynamicFetch<User>(
   `/api/user/${user.value?.id}`
 );
 

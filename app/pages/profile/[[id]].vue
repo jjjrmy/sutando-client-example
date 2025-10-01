@@ -156,9 +156,9 @@ const profileId = computed(() => {
 const isOwnProfile = computed(() => profileId.value === user.value?.id);
 
 // Fetch user data from the API
-const { data: profileUserData, error: userError } = await useDynamicFetch<
-  Record<string, any>
->(`/api/user/${profileId.value}`);
+const { data: profileUserData, error: userError } = await useDynamicFetch<User>(
+  `/api/user/${profileId.value}`
+);
 
 const profileUser = computed((): User | undefined => {
   if (!profileUserData.value) return undefined;

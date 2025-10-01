@@ -80,7 +80,7 @@ const {
   data: postsData,
   error,
   refresh,
-} = await useDynamicFetch<Record<string, any>[]>("/api/post");
+} = await useDynamicFetch<Post[]>("/api/post");
 
 // Convert API response to Sutando Collection
 const posts = computed((): Collection<Post> | undefined => {

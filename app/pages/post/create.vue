@@ -112,6 +112,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import Post from "~/models/Post";
 
 definePageMeta({
   layout: "mobile",
@@ -157,15 +158,18 @@ const createPost = async () => {
   try {
     // For now, we'll send the base64 image data as the photo field
     // In the next step, we'll handle actual file uploads in the API endpoint
-    const { data, error: fetchError } = await useDynamicFetch("/api/post", {
-      method: "POST",
-      body: {
-        user_id: user.value?.id,
-        title: null, // No title for Instagram-style posts
-        content: caption.value,
-        photo: imagePreview.value, // Base64 image data for now
-      },
-    });
+    const { data, error: fetchError } = await useDynamicFetch<Post>(
+      "/api/post",
+      {
+        method: "POST",
+        body: {
+          user_id: user.value?.id,
+          title: null, // No title for Instagram-style posts
+          content: caption.value,
+          photo: imagePreview.value, // Base64 image data for now
+        },
+      }
+    );
 
     if (fetchError.value) {
       const errorData = fetchError.value.data;
@@ -186,8 +190,13 @@ const createPost = async () => {
       return;
     }
 
+    if (!data.value) {
+      alert("Failed to create post. Please try again.");
+      return;
+    }
+
     // Redirect to the new post
-    if (data.value?.id) {
+    if (data.value.id) {
       await router.push(`/post/${data.value.id}`);
     }
   } catch (error) {
