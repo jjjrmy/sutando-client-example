@@ -2,7 +2,7 @@
   <!-- Mini view for profile grid -->
   <article v-if="isMiniView" class="aspect-square bg-gray-200 relative group">
     <NuxtLink :to="`/post/${post.id}`">
-      <div v-if="post.photo" class="absolute inset-0 overflow-hidden">
+      <div v-if="post.photo_url" class="absolute inset-0 overflow-hidden">
         <img
           :src="post.photo_url"
           :alt="post.title || 'Post image'"
@@ -52,7 +52,10 @@
         :to="`/profile/${post.user_id}`"
         class="flex items-center space-x-3"
       >
-        <div class="size-10 rounded-full mr-4 flex-shrink-0 overflow-hidden">
+        <div
+          v-if="post.user.avatar"
+          class="size-10 rounded-full mr-4 flex-shrink-0 overflow-hidden"
+        >
           <img
             :src="post.user.avatar"
             :alt="post.user.name"
@@ -70,7 +73,7 @@
 
     <!-- Post Image -->
     <NuxtLink :to="`/post/${post.id}`">
-      <div v-if="post.photo" class="aspect-square relative overflow-hidden">
+      <div v-if="post.photo_url" class="aspect-square relative overflow-hidden">
         <img
           :src="post.photo_url"
           :alt="post.title || 'Post image'"
