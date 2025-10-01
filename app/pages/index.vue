@@ -73,6 +73,7 @@ import Post from "~/models/Post";
 
 definePageMeta({
   layout: "mobile",
+  middleware: [],
 });
 
 // Fetch posts from the API

@@ -35,7 +35,7 @@
             ref="imageInput"
           />
           <button
-            @click="$refs.imageInput.click()"
+            @click="imageInput.click()"
             class="w-full aspect-square bg-gray-100 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors"
           >
             <svg

@@ -21,6 +21,7 @@
             class="w-20 h-20 rounded-full mr-4 flex-shrink-0 overflow-hidden"
           >
             <img
+              v-if="profileUser.avatar"
               :src="profileUser.avatar"
               :alt="profileUser.name"
               class="w-full h-full object-cover"

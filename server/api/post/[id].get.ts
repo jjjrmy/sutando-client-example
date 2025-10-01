@@ -10,8 +10,7 @@ export default defineEventHandler(async (event) => {
             .firstOrFail();
     } catch (error) {
         throw createError({
-            statusCode: 404,
-            message: 'Post not found'
+            statusCode: 404
         });
     }
 }); 

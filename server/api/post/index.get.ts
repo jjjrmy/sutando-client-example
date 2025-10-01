@@ -1,26 +1,20 @@
+import { Builder } from 'sutando';
 import Post from '~/models/Post';
 
 export default defineEventHandler(async (event) => {
-    try {
-        await requireAuth();
+    await requireAuth();
 
-        const query = getQuery(event);
-        let postQuery = Post.query();
+    const { user_id, limit = 100, page = 1 } = getQuery(event);
 
-        // Filter by user_id if provided
-        if (query.user_id) {
-            postQuery = postQuery.where('user_id', query.user_id as string);
-        }
+    let posts: Builder<Post> = Post.query();
 
-        // Always include author relationship
-        postQuery = postQuery.with('user');
-
-        return await postQuery.orderBy('created_at', 'desc').limit(100).get();
-    } catch (error) {
-        console.error('Error fetching posts:', error);
-        throw createError({
-            statusCode: 500,
-            statusMessage: 'Failed to fetch posts',
-        });
+    if (user_id) {
+        posts = posts.where('user_id', user_id as string);
     }
+
+    return await posts
+        .orderBy('created_at', 'desc')
+        .limit(limit as number)
+        .offset(page as number)
+        .get();
 });

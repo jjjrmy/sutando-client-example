@@ -1,40 +1,36 @@
+import { z } from 'zod';
 import Post from '~/models/Post';
 
-export default defineEventHandler(async (event) => {
-    const id = event.context.params?.id;
-    if (!id) {
-        throw createError({
-            statusCode: 400,
-            message: 'Post ID is required'
-        });
-    }
+const UpdatePostSchema = z.object({
+    title: z.string().nullable().optional(),
+    content: z.string(),
+    photo: z.string().nullable().optional(),
+});
 
+export default defineEventHandler(async (event) => {
+    const user = await requireAuth();
+
+    const { id } = getRouterParams(event);
     const body = await readBody(event);
 
-    if (!body.content) {
-        throw createError({
-            statusCode: 400,
-            message: 'Missing required field: content'
-        });
-    }
+    const validatedData = UpdatePostSchema.parse(body);
 
     const post = await Post.query()
         .where('id', id)
-        .first();
+        .where('user_id', user.id)
+        .firstOrFail();
 
-    if (!post) {
+    try {
+        await post.update({
+            title: validatedData.title ?? null,
+            content: validatedData.content,
+            ...(validatedData.photo !== undefined ? { photo: validatedData.photo } : {}),
+        });
+
+        return post;
+    } catch (error) {
         throw createError({
-            statusCode: 404,
-            message: 'Post not found'
+            statusCode: 400
         });
     }
-
-    await post.update({
-        title: body.title || null,
-        content: body.content,
-        photo: body.photo !== undefined ? body.photo : post.photo,
-        updated_at: new Date()
-    });
-
-    return post;
 }); 

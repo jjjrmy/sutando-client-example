@@ -58,8 +58,9 @@
         <div class="flex items-center px-4 py-4">
           <div class="size-16 rounded-full mr-4 flex-shrink-0 overflow-hidden">
             <img
-              :src="user?.avatar"
-              :alt="user?.name"
+              v-if="user?.avatar"
+              :src="user.avatar"
+              :alt="user.name"
               class="w-full h-full object-cover"
             />
           </div>

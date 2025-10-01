@@ -53,17 +53,17 @@
         class="flex items-center space-x-3"
       >
         <div
-          v-if="post.user.avatar"
+          v-if="user.avatar"
           class="size-10 rounded-full mr-4 flex-shrink-0 overflow-hidden"
         >
           <img
-            :src="post.user.avatar"
-            :alt="post.user.name"
+            :src="user.avatar"
+            :alt="user.name"
             class="w-full h-full object-cover"
           />
         </div>
         <div>
-          <p class="font-semibold text-sm">{{ post.user.username }}</p>
+          <p class="font-semibold text-sm">{{ user.username }}</p>
           <p class="text-xs text-gray-500">
             {{ post.created_at.toLocaleDateString() }}
           </p>
@@ -102,7 +102,7 @@
 
       <!-- Caption -->
       <div class="text-sm">
-        <span class="font-semibold">{{ post.user.username }}</span>
+        <span class="font-semibold">{{ user.username }}</span>
         <span class="ml-1">{{ post.content }}</span>
       </div>
 
@@ -133,7 +133,7 @@
 
       <!-- Caption -->
       <div class="text-sm mb-2">
-        <span class="font-semibold">{{ post.user.username }}</span>
+        <span class="font-semibold">{{ user.username }}</span>
         <span class="ml-1">{{ post.content }}</span>
       </div>
 
@@ -150,13 +150,25 @@ import type Post from "../../models/Post";
 import type User from "../../models/User";
 
 interface PostProps {
-  post: Post & { user: User };
+  post: Post;
+  user?: User;
   isFullView?: boolean;
   isMiniView?: boolean;
 }
 
-withDefaults(defineProps<PostProps>(), {
+const props = withDefaults(defineProps<PostProps>(), {
   isFullView: false,
   isMiniView: false,
+});
+
+const user = computed((): User => {
+  const userFromProps = props.user;
+  const userFromRelation = props.post.getRelation<User>("user");
+
+  if (!userFromProps && !userFromRelation) {
+    throw new Error("User is required");
+  }
+
+  return userFromProps || (userFromRelation as User);
 });
 </script>

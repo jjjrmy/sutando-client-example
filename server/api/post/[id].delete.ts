@@ -1,26 +1,22 @@
 import Post from '~/models/Post';
 
 export default defineEventHandler(async (event) => {
-    const id = event.context.params?.id;
-    if (!id) {
+    const user = await requireAuth();
+
+    const { id } = getRouterParams(event);
+
+    try {
+        const post = await Post.query()
+            .where('id', id)
+            .where('user_id', user.id)
+            .firstOrFail();
+
+        await post.delete();
+
+        return;
+    } catch (error) {
         throw createError({
-            statusCode: 400,
-            message: 'Post ID is required'
+            statusCode: 404
         });
     }
-
-    const post = await Post.query()
-        .where('id', id)
-        .first();
-
-    if (!post) {
-        throw createError({
-            statusCode: 404,
-            message: 'Post not found'
-        });
-    }
-
-    await post.delete();
-
-    return { success: true };
 }); 

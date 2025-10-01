@@ -3,8 +3,9 @@
   "compilerOptions": {
     "baseUrl": "..",
     "paths": {
-      "~/*": ["./app/*", "./*"],
+      "~/*": ["./app/*  ", "./*"],
       "@/*": ["./app/*", "./*"]
-    }
+    },
+    "types": ["./../worker-configuration.d.ts"]
   }
 }
