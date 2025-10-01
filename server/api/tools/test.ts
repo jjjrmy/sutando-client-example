@@ -1,10 +1,10 @@
-import { requireAuth } from "../../utils/auth"
+import { requireAuth } from "~/server/utils/auth"
 import {
     requireSubscription,
     getSubscriptionLimits,
     hasSubscriptionPlan,
     getActiveSubscriptions
-} from "../../utils/subscription"
+} from "~/server/utils/subscription"
 
 export default defineEventHandler(async () => {
     await requireAuth()
@@ -22,18 +22,6 @@ export default defineEventHandler(async () => {
     const activeSubscriptions = await getActiveSubscriptions()
 
     return {
-        message: 'Test endpoint - authenticated and subscription verified',
-        subscriptions: subscriptions.map(sub => ({
-            id: sub.id,
-            plan: sub.plan,
-            status: sub.status,
-            periodEnd: sub.periodEnd,
-            limits: sub.limits
-        })),
-        subscriptionLimits: limits,
-        planChecks: {
-            hasBasicPlan,
-        },
-        totalActiveSubscriptions: activeSubscriptions?.length || 0
+        message: 'Test endpoint - authenticated and subscription verified'
     }
 })

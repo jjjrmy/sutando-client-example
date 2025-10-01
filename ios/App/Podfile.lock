@@ -8,6 +8,8 @@ PODS:
     - StripeApplePay (~> 24.16.1)
     - StripePaymentSheet (~> 24.16.1)
   - CapacitorCordova (7.4.3)
+  - CapacitorDevice (7.0.2):
+    - Capacitor
   - CapacitorPushNotifications (7.0.3):
     - Capacitor
   - StripeApplePay (24.16.2):
@@ -35,6 +37,7 @@ DEPENDENCIES:
   - "CapacitorCommunityAppleSignIn (from `../../node_modules/@capacitor-community/apple-sign-in`)"
   - "CapacitorCommunityStripe (from `../../node_modules/@capacitor-community/stripe`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
 
 SPEC REPOS:
@@ -55,6 +58,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor-community/stripe"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
+  CapacitorDevice:
+    :path: "../../node_modules/@capacitor/device"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
 
@@ -63,6 +68,7 @@ SPEC CHECKSUMS:
   CapacitorCommunityAppleSignIn: 9a69d5f1d9c0a071da3a35a42f90da85c7ea054e
   CapacitorCommunityStripe: f450392193819371b160dec88b6e58037366008c
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
+  CapacitorDevice: 81ae78d5d1942707caad79276badd458bf6ec603
   CapacitorPushNotifications: bdd621fbd562be34a41f4a7b1750efa000447d5a
   StripeApplePay: 66dc43ec1284904a2cf4c5a0906f86296d23afbd
   StripeCore: f3a62397cecaf4da1827bcf07de7312ec1f3b96e
@@ -71,6 +77,6 @@ SPEC CHECKSUMS:
   StripePaymentsUI: d489e73bf790da1c74e642021475b1a09a4a4500
   StripeUICore: 723e5024c83acb5ba5e71335e110a471b182a74d
 
-PODFILE CHECKSUM: 93178a19b2c0cb691637d4fc511f2d974c8e27ce
+PODFILE CHECKSUM: 6d60ba87d2ad93ce01dab8c6766cbabff3dcb63d
 
 COCOAPODS: 1.16.2

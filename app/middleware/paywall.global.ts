@@ -1,4 +1,6 @@
-type SubscriptionOptions = false | {
+import { defu } from 'defu'
+
+type SubscriptionOptions = true | {
     /**
      * Required subscription plan(s) - can be a single plan or array of plans
      */
@@ -10,6 +12,17 @@ type SubscriptionOptions = false | {
     /**
      * Whether to allow access during trial period
      */
+    allowTrial?: boolean
+}
+
+interface RuntimePaywallConfig {
+    redirectTo: string
+    allowTrial?: boolean
+}
+
+type SubscriptionConfig = {
+    plan?: string | string[]
+    redirectTo?: string
     allowTrial?: boolean
 }
 
@@ -27,22 +40,38 @@ declare module 'vue-router' {
 
 export default defineNuxtRouteMiddleware(async (to) => {
     // If subscription check is disabled (default), skip middleware
-    if (to.meta?.subscription === false || !to.meta?.subscription) {
+    if (!to.meta?.subscription) {
         return
     }
 
     const { loggedIn, client } = useAuth()
-    const { plan, redirectTo = '/', allowTrial = true } = to.meta.subscription
+    const config = useRuntimeConfig()
+
+    // Get default options from runtime config
+    const defaultOptions: SubscriptionConfig = defu(config.public.paywall as Partial<RuntimePaywallConfig>, {
+        redirectTo: '/',
+        allowTrial: true
+    })
+
+    // Handle both object config and boolean true, merging with defaults
+    const subscriptionOptions: SubscriptionConfig = typeof to.meta.subscription === 'object'
+        ? defu(to.meta.subscription, defaultOptions)
+        : defaultOptions
+
+    const {
+        plan,
+        redirectTo,
+        allowTrial
+    } = subscriptionOptions
 
     // First check if user is authenticated
     if (!loggedIn.value) {
         return navigateTo('/auth')
     }
 
-    // If no specific plan is required, just check if user is authenticated
-    if (!plan) {
-        return
-    }
+    // If subscription is true but no specific plan is required,
+    // just check if user has any active subscription
+    const requiresAnySubscription = to.meta.subscription === true
 
     try {
         // Fetch user's subscriptions
@@ -64,6 +93,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
         if (!activeSubscriptions.length) {
             // No active subscription found
             return navigateTo(redirectTo)
+        }
+
+        // If we just need any subscription and user has active subscriptions, allow access
+        if (requiresAnySubscription || !plan) {
+            // Store subscription data in state for easy access in components
+            useState('paywall:subscriptions', () => activeSubscriptions)
+            return
         }
 
         // Check if user has required plan(s)

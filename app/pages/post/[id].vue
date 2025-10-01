@@ -1,135 +1,68 @@
-<!-- Post Detail/Edit Page -->
 <template>
-  <div class="container mx-auto p-4">
-    <div class="bg-white shadow rounded-lg p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold">
-          {{ isNew ? "Create Post" : "Edit Post" }}
-        </h1>
-        <NuxtLink
-          :to="`/user/${post.user_id}`"
-          class="text-blue-500 hover:text-blue-600"
-          >← Back to User</NuxtLink
-        >
+  <div class="min-h-screen bg-white">
+    <!-- Header -->
+    <div class="sticky top-0 bg-white border-b border-gray-200 z-10">
+      <div class="px-4 py-3 flex items-center">
+        <NuxtLink to="/" class="mr-4">
+          <Icon name="ri:arrow-left-line" size="24" />
+          <span class="sr-only">Back</span>
+        </NuxtLink>
+        <h1 class="text-lg font-semibold">Post</h1>
       </div>
+    </div>
 
-      <!-- Post Form -->
-      <form @submit.prevent="savePost" class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Title</label>
-          <input
-            type="text"
-            v-model="post.title"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-            required
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Content</label>
-          <textarea
-            v-model="post.content"
-            rows="4"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-            required
-          ></textarea>
-        </div>
-        <div class="flex space-x-2">
-          <button
-            type="submit"
-            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            {{ isNew ? "Create Post" : "Save Changes" }}
-          </button>
-          <NuxtLink
-            :to="`/user/${post.user_id}`"
-            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-          >
-            Cancel
-          </NuxtLink>
-          <button
-            v-if="!isNew"
-            type="button"
-            @click="deletePost"
-            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
-            Delete Post
-          </button>
-        </div>
-      </form>
+    <!-- Error State -->
+    <div v-if="postError" class="flex justify-center items-center py-20 px-4">
+      <div class="text-center">
+        <Icon
+          name="ri:error-warning-line"
+          size="48"
+          class="text-red-400 mx-auto mb-4"
+        />
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">
+          Oops! Something went wrong
+        </h3>
+        <p class="text-gray-500 mb-4">
+          We couldn't load this post. It may have been deleted or you may not
+          have permission to view it.
+        </p>
+        <NuxtLink
+          to="/"
+          class="inline-block px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+        >
+          Back to Timeline
+        </NuxtLink>
+      </div>
+    </div>
+
+    <!-- Post Content -->
+    <div v-else-if="post" class="flex flex-col pb-20">
+      <PostComponent :post :isFullView="true" />
+      <Comments />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { make } from "sutando";
-import Post from "../../../models/Post";
-import { modelRef } from "~/utils/model";
+import PostComponent from "~/app/components/Post.vue";
+import Post from "~/models/Post";
+
+definePageMeta({
+  layout: "mobile",
+});
 
 const route = useRoute();
-const router = useRouter();
-const post = modelRef();
-const isNew = computed(() => route.params.id === "create");
+const postId = route.params.id;
 
-// Initialize post data
-if (isNew.value) {
-  post.value = make(Post, {
-    user_id: parseInt(route.query.user_id as string),
-    title: "",
-    content: "",
-  });
-} else {
-  const { data: postData } = await useDynamicFetch(
-    `/api/post/${route.params.id}`
-  );
-  watch(
-    postData,
-    (newData) => {
-      post.value = make(Post, newData);
-    },
-    { immediate: true }
-  );
-}
+// Fetch post from the API
+const { data: postData, error: postError } = await useDynamicFetch<
+  Record<string, any>
+>(`/api/post/${postId}`);
 
-async function savePost() {
-  try {
-    if (isNew.value) {
-      await useDynamicFetch("/api/post", {
-        method: "POST",
-        body: {
-          user_id: post.value.user_id,
-          title: post.value.title,
-          content: post.value.content,
-        },
-      });
-    } else {
-      await useDynamicFetch(`/api/post/${post.value.id}`, {
-        method: "PUT",
-        body: {
-          title: post.value.title,
-          content: post.value.content,
-        },
-      });
-    }
-    router.push(`/user/${post.value.user_id}`);
-  } catch (error) {
-    console.error("Failed to save post:", error);
-    // Add error handling UI here
-  }
-}
-
-async function deletePost() {
-  if (!confirm("Are you sure you want to delete this post?")) {
-    return;
-  }
-
-  try {
-    await useDynamicFetch(`/api/post/${post.value.id}`, {
-      method: "DELETE",
-    });
-    router.push(`/user/${post.value.user_id}`);
-  } catch (error) {
-    console.error("Failed to delete post:", error);
-    // Add error handling UI here
-  }
-}
+// Convert API response to Sutando model
+const post = computed((): Post | undefined => {
+  if (!postData.value) return undefined;
+  return make(Post, postData.value);
+});
 </script>

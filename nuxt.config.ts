@@ -10,8 +10,11 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-09-11',
     devtools: { enabled: false },
     ssr: isSSR,
-    css: ['~/assets/css/main.css'],
-    modules: ["nitro-cloudflare-dev", 'nuxt-security'],
+    css: ['@/assets/css/main.css'],
+    alias: {
+        '~': path.resolve(__dirname, '.'),
+    },
+    modules: ["nitro-cloudflare-dev", 'nuxt-security', '@nuxt/icon'],
     app: {
         head: {
             meta: [
@@ -26,9 +29,14 @@ export default defineNuxtConfig({
             apiBaseUrl: isSSR ? undefined : process.env.APP_URL,
             isMobile: import.meta.env.NUXT_MOBILE == 'true',
             auth: {
-                redirectUserTo: '/dashboard',
-                redirectGuestTo: '/',
+                redirectUserTo: '/',
+                redirectGuestTo: '/auth',
             },
+            paywall: {
+                redirectTo: '/paywall',
+                allowTrial: true,
+            },
+            cdnUrl: process.env.CDN_URL || '',
         }
     },
     vite: {
@@ -55,9 +63,19 @@ export default defineNuxtConfig({
             'debug': 'export default function createDebug(){return function debug(){}}'
         }
     },
+    icon: {
+        serverBundle: {
+            collections: ['ri']
+        }
+    },
     security: {
+        headers: {
+            contentSecurityPolicy: {
+                'img-src': ["'self'", 'data:', 'https://www.gravatar.com', process.env.CDN_URL || ''],
+            }
+        },
         corsHandler: {
-            origin: ['http://localhost:3000', 'https://localhost:3000', 'https://192.168.0.122:3000', 'http://localhost:3001', 'capacitor://localhost'],
+            origin: ['http://127.0.0.1:3000', 'https://127.0.0.1:3000', 'http://localhost:3000', 'https://localhost:3000', 'https://192.168.0.122:3000', 'http://localhost:3001', 'capacitor://localhost'],
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowHeaders: ['Content-Type', 'Authorization'],
             credentials: true,

@@ -1,6 +1,5 @@
-import { requireAuth } from '../../utils/auth';
-import { notify, notifyUser } from '../../utils/notify';
-import ContactMethod from '../../../models/ContactMethod';
+import { notify, notifyUser } from '~/server/utils/notify';
+import ContactMethod from '~/models/ContactMethod';
 
 export default defineEventHandler(async (event) => {
     // Require authentication

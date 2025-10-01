@@ -1,4 +1,4 @@
-import Post from '../../../models/Post';
+import Post from '~/models/Post';
 
 export default defineEventHandler(async (event) => {
     const id = event.context.params?.id;
@@ -11,10 +11,10 @@ export default defineEventHandler(async (event) => {
 
     const body = await readBody(event);
 
-    if (!body.title || !body.content) {
+    if (!body.content) {
         throw createError({
             statusCode: 400,
-            message: 'Missing required fields: title, content'
+            message: 'Missing required field: content'
         });
     }
 
@@ -30,8 +30,9 @@ export default defineEventHandler(async (event) => {
     }
 
     await post.update({
-        title: body.title,
+        title: body.title || null,
         content: body.content,
+        photo: body.photo !== undefined ? body.photo : post.photo,
         updated_at: new Date()
     });
 

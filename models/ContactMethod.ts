@@ -10,6 +10,7 @@ export default class ContactMethod extends Model {
     declare identifier: string;
     declare platform: string;
     declare expires_at: Date | null;
+    declare last_contacted_at: Date | null;
     declare created_at: Date;
     declare updated_at: Date;
 

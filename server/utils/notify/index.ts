@@ -49,36 +49,54 @@ export async function notify(
     }
 
     // Route to appropriate provider
+    let result: NotificationResult;
+
     switch (contactMethod.type) {
         case ContactMethodType.PUSH:
-            return notifyPush(contactMethod, options);
+            result = await notifyPush(contactMethod, options);
+            break;
 
         case ContactMethodType.EMAIL:
-            return notifyEmail(contactMethod, options);
+            result = await notifyEmail(contactMethod, options);
+            break;
 
         case ContactMethodType.PHONE:
         case ContactMethodType.WHATSAPP:
-            return notifyPhone(contactMethod, options);
+            result = await notifyPhone(contactMethod, options);
+            break;
 
         case ContactMethodType.WEBHOOK:
-            return notifyWebhook(contactMethod, options);
+            result = await notifyWebhook(contactMethod, options);
+            break;
 
         case ContactMethodType.SLACK:
-            return notifySlack(contactMethod, options);
+            result = await notifySlack(contactMethod, options);
+            break;
 
         case ContactMethodType.DISCORD:
-            return notifyDiscord(contactMethod, options);
+            result = await notifyDiscord(contactMethod, options);
+            break;
 
         case ContactMethodType.TELEGRAM:
-            return notifyTelegram(contactMethod, options);
+            result = await notifyTelegram(contactMethod, options);
+            break;
 
         default:
-            return {
+            result = {
                 success: false,
                 provider: contactMethod.type,
                 error: `Unsupported notification type: ${contactMethod.type}`
             };
     }
+
+    // Update last_contacted_at if notification was successful
+    if (result.success) {
+        await contactMethod.update({
+            last_contacted_at: new Date().toISOString()
+        });
+    }
+
+    return result;
 }
 
 /**

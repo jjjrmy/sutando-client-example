@@ -8,9 +8,16 @@ export default class User extends withTraits(Model, HasUniqueIds) {
   declare name: string;
   declare email: string;
   declare emailVerified: boolean;
+  declare phoneNumber: string | null;
+  declare phoneNumberVerified: boolean;
+  declare stripeCustomerId: Date | null;
   declare image: string;
   declare createdAt: Date;
   declare updatedAt: Date;
+
+  declare avatar: string | null;
+  declare username: string | null;
+  declare full_name: string | null;
 
   static UPDATED_AT = "updatedAt";
   static CREATED_AT = "createdAt";
@@ -27,15 +34,27 @@ export default class User extends withTraits(Model, HasUniqueIds) {
     })
   }
 
+  attributeAvatar() {
+    return Attribute.make({
+      get: (value: string, attributes: User) => `https://www.gravatar.com/avatar/${attributes.id}`,
+    })
+  }
+
+  attributeUsername() {
+    return Attribute.make({
+      get: (value: string, attributes: any) => attributes.username || attributes.email?.split('@')[0],
+    })
+  }
+
   attributeHasPosts() {
     return Attribute.make({
-      get: (value: string, attributes: any) => (this.getRelation('posts') as Collection<Post>)?.isNotEmpty(),
+      get: (value: string, attributes: any) => true // (this.getRelation('posts') as Collection<Post>)?.isNotEmpty(),
     })
   }
 
   attributeHasEditedPosts() {
     return Attribute.make({
-      get: (value: string, attributes: any) => (this.getRelation('posts') as Collection<Post>)?.filter((post: Post) => post.was_edited).isNotEmpty(),
+      get: (value: string, attributes: any) => true // (this.getRelation('posts') as Collection<Post>)?.filter((post: Post) => post.was_edited).isNotEmpty(),
     })
   }
 

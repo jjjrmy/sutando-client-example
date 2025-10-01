@@ -4,6 +4,7 @@ import { sutandoAdapter } from "../../db/adapter/sutando";
 import { bearer, phoneNumber } from "better-auth/plugins";
 import User from "../../models/User";
 import { stripe } from "@better-auth/stripe";
+import { subscriptionPlans } from "../../products";
 
 import Stripe from "stripe"
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -28,7 +29,7 @@ export function serverAuth() {
             account: {
                 accountLinking: {
                     enabled: true,
-                    trustedProviders: ["apple", "google"],
+                    trustedProviders: ["phone-number", "phone", "phoneNumber", "apple", "google", "github", "email-password"],
                     allowDifferentEmails: true,
                 },
             },
@@ -68,17 +69,11 @@ export function serverAuth() {
                     createCustomerOnSignUp: true,
                     subscription: {
                         enabled: true,
-                        plans: [
-                            {
-                                name: "basic", // the name of the plan, it'll be automatically lower cased when stored in the database
-                                priceId: "price_1SAclCJqchVnnn7K8rTDfTXT", // the price ID from stripe
-                                // annualDiscountPriceId: "price_1234567890", // (optional) the price ID for annual billing with a discount
-                                limits: {
-                                    projects: 5,
-                                    storage: 10
-                                }
-                            },
-                        ],
+                        plans: subscriptionPlans.map(plan => ({
+                            name: plan.name,
+                            priceId: plan.priceId,
+                            limits: plan.limits
+                        })),
                         getCheckoutSessionParams: async () => ({
                             params: {
                                 origin_context: "mobile_app",

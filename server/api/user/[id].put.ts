@@ -1,22 +1,23 @@
-import User from "../../../models/User";
+import { z } from 'zod';
+import User from "~/models/User";
+
+const UpdateUserSchema = z.object({
+    name: z.string(),
+    email: z.email()
+});
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    const userId = String(event.context.params?.id);
+    const { id } = getRouterParams(event);
 
-    if (!userId) {
-        throw createError({
-            statusCode: 400,
-            message: 'Valid user ID is required'
-        });
-    }
+    const validatedData = UpdateUserSchema.parse(body);
 
     await User.query()
-        .where('id', userId)
+        .where('id', id)
         .update({
-            name: body.name,
-            email: body.email
+            name: validatedData.name,
+            email: validatedData.email
         });
 
-    return await User.query().where('id', userId).first();
+    return await User.query().where('id', id).first();
 }); 
