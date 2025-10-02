@@ -1,7 +1,7 @@
 import Post from '~/models/Post';
 import { z } from 'zod';
 
-const fileRegex = /^data:image\/(png|jpe?g|gif|webp);base64,.+$/;
+const fileRegex = /^data:image\/(png|jpe?g|gif|webp);base64,(.+)$/;
 
 const CreatePostSchema = z.object({
     title: z.string().nullable().optional(),
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
     });
 
     try {
-        const [base64Data, imageFormat] = body.photo.match(fileRegex);
+        const [, imageFormat, base64Data] = body.photo.match(fileRegex);
         const imageBuffer = Buffer.from(base64Data, 'base64');
         const arrayBuffer = imageBuffer.buffer.slice(
             imageBuffer.byteOffset,
