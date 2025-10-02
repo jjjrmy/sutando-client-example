@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
 
         await R2.put(objectKey, arrayBuffer, {
             httpMetadata: {
-                contentType: `image/${getFileExtension(imageFormat)}`,
+                contentType: `image/${imageFormat}`,
                 cacheControl: 'public, max-age=31536000',
             },
             customMetadata: {
