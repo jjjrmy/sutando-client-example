@@ -11,6 +11,16 @@ const CreatePostSchema = z.object({
     }),
 });
 
+function getFileExtension(imageFormat: string) {
+    return {
+        'png': 'png',
+        'gif': 'gif',
+        'webp': 'webp',
+        'jpeg': 'jpg',
+        'jpg': 'jpg'
+    }[imageFormat];
+}
+
 export default defineEventHandler(async (event) => {
     const R2 = event.context.cloudflare.env.R2 as R2Bucket;
 
@@ -34,11 +44,11 @@ export default defineEventHandler(async (event) => {
             imageBuffer.byteOffset + imageBuffer.byteLength
         );
 
-        const objectKey = `${user.id}/${post.id}.${imageFormat}`;
+        const objectKey = `${user.id}/${post.id}.${getFileExtension(imageFormat)}`;
 
         await R2.put(objectKey, arrayBuffer, {
             httpMetadata: {
-                contentType: `image/${imageFormat}`,
+                contentType: `image/${getFileExtension(imageFormat)}`,
                 cacheControl: 'public, max-age=31536000',
             },
             customMetadata: {
