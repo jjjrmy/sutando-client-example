@@ -27,12 +27,16 @@ export default defineEventHandler(async (event) => {
     });
 
     try {
-        const [, imageFormat, base64Data] = body.photo.match(fileRegex);
+        const [base64Data, imageFormat] = body.photo.match(fileRegex);
         const imageBuffer = Buffer.from(base64Data, 'base64');
+        const arrayBuffer = imageBuffer.buffer.slice(
+            imageBuffer.byteOffset,
+            imageBuffer.byteOffset + imageBuffer.byteLength
+        );
 
         const objectKey = `${user.id}/${post.id}.${imageFormat}`;
 
-        await R2.put(objectKey, imageBuffer, {
+        await R2.put(objectKey, arrayBuffer, {
             httpMetadata: {
                 contentType: `image/${imageFormat}`,
                 cacheControl: 'public, max-age=31536000',
