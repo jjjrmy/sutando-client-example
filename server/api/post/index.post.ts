@@ -50,7 +50,8 @@ export default defineEventHandler(async (event) => {
         await post.delete();
 
         throw createError({
-            statusCode: 500
+            statusCode: 500,
+            message: error instanceof Error ? error.message : 'Failed to upload image'
         });
     }
 
