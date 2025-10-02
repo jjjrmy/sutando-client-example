@@ -4,7 +4,7 @@ import Post from '~/models/Post';
 export default defineEventHandler(async (event) => {
     await requireAuth();
 
-    const { user_id, limit = 100, page = 1 } = getQuery(event);
+    const { user_id } = getQuery(event);
 
     let posts: Builder<Post> = Post.query().with('user');
 
@@ -14,7 +14,5 @@ export default defineEventHandler(async (event) => {
 
     return await posts
         .orderBy('created_at', 'desc')
-        .limit(limit as number)
-        .offset(page as number)
         .get();
 });
