@@ -21,19 +21,7 @@
         <div
           class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full mb-6"
         >
-          <svg
-            class="w-12 h-12 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-            />
-          </svg>
+          <Icon name="ri:notification-2-line" size="48" class="text-white" />
         </div>
 
         <h1 class="text-3xl font-bold mb-3">Stay Connected</h1>
@@ -49,19 +37,7 @@
             <div
               class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0"
             >
-              <svg
-                class="w-5 h-5 text-purple-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
+              <Icon name="ri:heart-line" size="20" class="text-purple-600" />
             </div>
             <div>
               <p class="font-medium">Likes & Comments</p>
@@ -75,19 +51,11 @@
             <div
               class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0"
             >
-              <svg
-                class="w-5 h-5 text-purple-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
+              <Icon
+                name="ri:message-3-line"
+                size="20"
+                class="text-purple-600"
+              />
             </div>
             <div>
               <p class="font-medium">Direct Messages</p>
@@ -99,19 +67,7 @@
             <div
               class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0"
             >
-              <svg
-                class="w-5 h-5 text-purple-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                />
-              </svg>
+              <Icon name="ri:user-add-line" size="20" class="text-purple-600" />
             </div>
             <div>
               <p class="font-medium">New Followers</p>
@@ -129,20 +85,16 @@
           >
             <span class="text-white text-xs font-bold">3</span>
           </div>
-          <svg
-            class="w-16 h-16 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-              d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-            />
-          </svg>
+          <Icon name="ri:smartphone-line" size="64" class="text-gray-400" />
         </div>
+      </div>
+
+      <!-- Error Message -->
+      <div
+        v-if="errorMessage"
+        class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4"
+      >
+        <p class="text-sm text-red-600">{{ errorMessage }}</p>
       </div>
     </div>
 
@@ -150,9 +102,19 @@
     <div class="px-6 pb-safe">
       <div class="py-4 space-y-3">
         <button
-          class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors"
+          @click="handleEnableNotifications"
+          :disabled="isRegistering"
+          class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
         >
-          Enable Notifications
+          <Icon
+            v-if="isRegistering"
+            name="ri:loader-4-line"
+            size="20"
+            class="animate-spin"
+          />
+          <span>{{
+            isRegistering ? "Enabling..." : "Enable Notifications"
+          }}</span>
         </button>
         <NuxtLink
           to="/onboarding/camera"
@@ -166,8 +128,186 @@
 </template>
 
 <script setup lang="ts">
+import { PushNotifications } from "@capacitor/push-notifications";
+import { Device } from "@capacitor/device";
+import { v4 as uuidv4 } from "uuid";
+
 definePageMeta({
   layout: false,
   auth: false,
 });
+
+const router = useRouter();
+const isRegistering = ref(false);
+const errorMessage = ref("");
+const config = useRuntimeConfig();
+
+// Check if we're on a mobile device
+const isMobile = computed(() => config.public.isMobile);
+
+// Get or create a unique device/browser identifier
+const getDeviceIdentifier = async (): Promise<string> => {
+  if (isMobile.value) {
+    // For native mobile, use Capacitor Device ID
+    try {
+      const info = await Device.getId();
+      return info.identifier;
+    } catch (error) {
+      console.error("Failed to get device ID:", error);
+      // Fallback to stored UUID
+      let id = localStorage.getItem("device_id");
+      if (!id) {
+        id = uuidv4();
+        localStorage.setItem("device_id", id);
+      }
+      return id;
+    }
+  } else {
+    // For web, use or create a browser ID
+    let id = localStorage.getItem("browser_id");
+    if (!id) {
+      id = uuidv4();
+      localStorage.setItem("browser_id", id);
+    }
+    return id;
+  }
+};
+
+// Handle native mobile push notifications
+const registerMobileNotifications = async () => {
+  try {
+    // Check permissions
+    let permStatus = await PushNotifications.checkPermissions();
+
+    if (permStatus.receive === "prompt") {
+      permStatus = await PushNotifications.requestPermissions();
+    }
+
+    if (permStatus.receive !== "granted") {
+      throw new Error("Permission denied for notifications");
+    }
+
+    // Register for push notifications
+    await PushNotifications.register();
+
+    // Return a promise that resolves when we get the token
+    return new Promise<string>((resolve, reject) => {
+      // Add listener for registration token
+      PushNotifications.addListener("registration", (token) => {
+        console.info("Push registration token:", token.value);
+        resolve(token.value);
+      });
+
+      // Add listener for registration errors
+      PushNotifications.addListener("registrationError", (err) => {
+        console.error("Push registration error:", err.error);
+        reject(new Error(err.error));
+      });
+
+      // Add listener for received notifications
+      PushNotifications.addListener(
+        "pushNotificationReceived",
+        (notification) => {
+          console.log("Push notification received:", notification);
+        }
+      );
+
+      // Add listener for notification actions
+      PushNotifications.addListener(
+        "pushNotificationActionPerformed",
+        (notification) => {
+          console.log(
+            "Push notification action performed",
+            notification.actionId,
+            notification.inputValue
+          );
+        }
+      );
+    });
+  } catch (error) {
+    console.error("Mobile notification registration failed:", error);
+    throw error;
+  }
+};
+
+// Handle browser web push notifications
+const registerBrowserNotifications = async (): Promise<string> => {
+  try {
+    if (!("Notification" in window)) {
+      throw new Error("This browser does not support notifications");
+    }
+
+    // Request permission
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      throw new Error("Permission denied for notifications");
+    }
+
+    // For web push, we would typically register a service worker and get a push subscription
+    // For now, we'll use a simple browser token (the browser ID)
+    const browserId = await getDeviceIdentifier();
+    return browserId;
+  } catch (error) {
+    console.error("Browser notification registration failed:", error);
+    throw error;
+  }
+};
+
+// Register the notification token with the backend
+const registerWithBackend = async (token: string, identifier: string) => {
+  const platform = isMobile.value ? (await Device.getInfo()).platform : "web";
+
+  const { data, error: fetchError } = await useDynamicFetch(
+    "/api/notify/register",
+    {
+      method: "POST",
+      body: {
+        type: "push",
+        token: token,
+        identifier: identifier,
+        platform: platform,
+        expires_at: null,
+      },
+    }
+  );
+
+  if (fetchError.value) {
+    console.error("Failed to register notification token:", fetchError.value);
+    throw new Error("Failed to register notification token with backend");
+  }
+};
+
+// Main handler for enabling notifications
+const handleEnableNotifications = async () => {
+  if (isRegistering.value) return;
+
+  isRegistering.value = true;
+  errorMessage.value = "";
+
+  try {
+    const identifier = await getDeviceIdentifier();
+    let token: string;
+
+    if (isMobile.value) {
+      // Use Capacitor Push Notifications for mobile
+      token = await registerMobileNotifications();
+    } else {
+      // Use browser notifications for web
+      token = await registerBrowserNotifications();
+    }
+
+    // Register with backend
+    await registerWithBackend(token, identifier);
+
+    // Success! Navigate to next step
+    await router.push("/onboarding/camera");
+  } catch (error: any) {
+    console.error("Failed to enable notifications:", error);
+    errorMessage.value =
+      error.message || "Failed to enable notifications. Please try again.";
+  } finally {
+    isRegistering.value = false;
+  }
+};
 </script>

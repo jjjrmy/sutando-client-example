@@ -1,86 +1,134 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 p-6">
-    <div class="max-w-md mx-auto">
-      <h1 class="text-3xl font-bold text-gray-800 mb-2">Onboarding Flow</h1>
-      <p class="text-gray-600 mb-8">Test each step of the onboarding process</p>
-
-      <div class="bg-white rounded-2xl shadow-lg p-6">
-        <h2 class="text-xl font-semibold mb-4">Onboarding Steps</h2>
-        <div class="space-y-3">
-          <NuxtLink
-            to="/onboarding/profile"
-            class="block p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
-          >
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="font-semibold">Step 1: Profile Setup</p>
-                <p class="text-sm opacity-90">Create username and add photo</p>
-              </div>
-              <span class="text-2xl">👤</span>
-            </div>
-          </NuxtLink>
-
-          <NuxtLink
-            to="/onboarding/notifications"
-            class="block p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
-          >
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="font-semibold">Step 2: Notifications</p>
-                <p class="text-sm opacity-90">Enable push notifications</p>
-              </div>
-              <span class="text-2xl">🔔</span>
-            </div>
-          </NuxtLink>
-
-          <NuxtLink
-            to="/onboarding/camera"
-            class="block p-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-colors"
-          >
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="font-semibold">Step 3: Camera Access</p>
-                <p class="text-sm opacity-90">Allow camera and photo access</p>
-              </div>
-              <span class="text-2xl">📷</span>
-            </div>
-          </NuxtLink>
+  <div class="min-h-screen bg-white flex flex-col">
+    <!-- Progress Bar -->
+    <div class="px-4 pt-safe">
+      <div class="py-4">
+        <div class="flex space-x-2">
+          <div class="flex-1 h-1 bg-purple-600 rounded-full"></div>
+          <div class="flex-1 h-1 bg-gray-200 rounded-full"></div>
+          <div class="flex-1 h-1 bg-gray-200 rounded-full"></div>
         </div>
+        <p class="text-xs text-gray-500 mt-2">Step 1 of 3</p>
+      </div>
+    </div>
 
-        <div class="mt-6 pt-6 border-t border-gray-200">
-          <NuxtLink
-            to="/"
-            class="text-purple-600 text-sm font-medium flex items-center"
+    <!-- Content -->
+    <div class="flex-1 px-6 py-6">
+      <h1 class="text-2xl font-bold mb-2">Create your profile</h1>
+      <p class="text-gray-600 mb-8">
+        Add a photo and username so friends can find you
+      </p>
+
+      <!-- Profile Photo Upload -->
+      <div class="flex flex-col items-center mb-8">
+        <div class="relative mb-4">
+          <div
+            class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center"
           >
-            <svg
-              class="w-4 h-4 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to all pages
-          </NuxtLink>
+            <Icon name="ri:user-3-line" size="48" class="text-gray-400" />
+          </div>
         </div>
       </div>
 
-      <div class="mt-8 text-center text-sm text-gray-500">
-        <p>Each step can be accessed individually</p>
-        <p>Progress bar shows current step in actual flow</p>
+      <!-- Form Fields -->
+      <form @submit.prevent="handleContinue" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Full Name</label
+          >
+          <input
+            v-model="form.name"
+            type="text"
+            placeholder="John Doe"
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Username</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >@</span
+            >
+            <input
+              v-model="form.username"
+              type="text"
+              placeholder="johndoe"
+              required
+              class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            />
+          </div>
+          <p class="text-xs text-gray-500 mt-1">
+            This will be your unique handle
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Bio</label
+          >
+          <textarea
+            v-model="form.bio"
+            placeholder="Tell us about yourself..."
+            :maxlength="150"
+            rows="3"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+          ></textarea>
+          <p class="text-xs text-gray-500 mt-1">
+            {{ form.bio?.length || 0 }}/150
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="px-6 pb-safe">
+      <div class="py-4 space-y-3">
+        <button
+          @click="handleContinue"
+          class="block w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors text-center disabled:opacity-50"
+        >
+          Continue
+        </button>
+        <NuxtLink
+          to="/onboarding/notifications"
+          class="block w-full text-center text-purple-600 font-medium text-sm underline hover:text-purple-700"
+        >
+          Skip for now
+        </NuxtLink>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  layout: false,
-  auth: false,
+const { userModel: user } = useAuth();
+
+const form = reactive({
+  name: user.value?.name,
+  username: user.value?.username,
+  bio: user.value?.biography,
 });
+
+const handleContinue = async () => {
+  const { error: submitError } = await useDynamicFetch("/api/user", {
+    method: "PUT",
+    body: {
+      name: form.name?.trim(),
+      username: form.username?.trim(),
+      biography: form.bio?.trim(),
+    },
+  });
+
+  if (submitError.value) {
+    console.error("Failed to save profile:", submitError.value);
+    return;
+  }
+
+  await navigateTo("/onboarding/notifications");
+};
 </script>

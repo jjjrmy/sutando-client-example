@@ -116,7 +116,7 @@ import Post from "~/models/Post";
 
 definePageMeta({
   layout: "mobile",
-  subscription: true,
+  // subscription: true,
 });
 
 const router = useRouter();

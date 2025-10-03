@@ -1,4 +1,3 @@
-import type { H3Event } from 'h3'
 import { betterAuth } from 'better-auth';
 import { sutandoAdapter } from "../../db/adapter/sutando";
 import { bearer, phoneNumber } from "better-auth/plugins";
@@ -25,6 +24,21 @@ export function serverAuth() {
             baseURL: getBaseURL(),
             user: {
                 modelName: "users",
+                additionalFields: {
+                    onboarding_completed_at: {
+                        type: "string",
+                        required: false,
+                        input: false,
+                    },
+                    username: {
+                        type: "string",
+                        required: false,
+                    },
+                    biography: {
+                        type: "string",
+                        required: false,
+                    },
+                }
             },
             account: {
                 accountLinking: {

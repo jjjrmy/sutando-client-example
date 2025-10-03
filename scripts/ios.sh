@@ -9,5 +9,5 @@ npx cap sync ios
 echo "🏃 Select an iOS device to run the build at local ip address ${LIP} on..."
 # eval "npx cap run ios --live-reload --host=${LIP} --port=3000 --target=B5A00B76-1049-432C-B953-288E783CDD92"
 # eval "npx cap run ios --target=B5A00B76-1049-432C-B953-288E783CDD92"
-eval "npx cap run ios --target=00008120-001E2D593A70201E"
-# eval "npx cap run ios"
+# eval "npx cap run ios --target=00008120-001E2D593A70201E"
+eval "npx cap run ios"

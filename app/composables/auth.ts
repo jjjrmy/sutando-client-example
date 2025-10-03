@@ -8,6 +8,8 @@ import type {
 import { phoneNumberClient } from 'better-auth/client/plugins'
 import type { RouteLocationRaw } from 'vue-router'
 import { stripeClient } from "@better-auth/stripe/client"
+import { make } from "sutando"
+import User from '~/models/User'
 
 
 interface RuntimeAuthConfig {
@@ -53,36 +55,66 @@ export function useAuth() {
     })
     const session = useState<InferSessionFromClient<ClientOptions> | null>('auth:session', () => null)
     const user = useState<InferUserFromClient<ClientOptions> | null>('auth:user', () => null)
-    const sessionFetching = import.meta.server ? ref(false) : useState('auth:sessionFetching', () => false)
 
-    const fetchSession = async () => {
-        if (sessionFetching.value) {
-            console.log('already fetching session')
-            return
+    // Use a promise to ensure only one fetch happens per navigation
+    const sessionFetchPromise = useState<Promise<any> | null>('auth:sessionFetchPromise', () => null)
+
+    const fetchSession = async (force: boolean = false) => {
+        // If we're on the server, always fetch fresh
+        if (import.meta.server) {
+            const { data } = await client.getSession({
+                fetchOptions: {
+                    ...(config.public.apiBaseUrl !== undefined && config.public.apiBaseUrl !== "" ? { baseURL: `${config.public.apiBaseUrl}/api/auth` } : {}),
+                    headers,
+                },
+            })
+            session.value = data?.session || null
+            user.value = data?.user || null
+            return data
         }
-        sessionFetching.value = true
-        const { data } = await client.getSession({
+
+        // If forcing a new fetch, clear any existing promise
+        if (force && sessionFetchPromise.value) {
+            sessionFetchPromise.value = null
+        }
+
+        // If there's already a fetch in progress, return the existing promise
+        if (sessionFetchPromise.value) {
+            return sessionFetchPromise.value
+        }
+
+        // Create a new fetch promise
+        sessionFetchPromise.value = client.getSession({
             fetchOptions: {
                 ...(config.public.apiBaseUrl !== undefined && config.public.apiBaseUrl !== "" ? { baseURL: `${config.public.apiBaseUrl}/api/auth` } : {}),
                 headers,
             },
+        }).then(({ data }) => {
+            session.value = data?.session || null
+            user.value = data?.user || null
+            // Don't clear the promise here - let it persist for the current navigation
+            return data
+        }).catch((error) => {
+            sessionFetchPromise.value = null // Clear the promise on error
+            throw error
         })
-        session.value = data?.session || null
-        user.value = data?.user || null
-        sessionFetching.value = false
-        return data
+
+        return sessionFetchPromise.value
     }
+
 
     if (import.meta.client) {
         client.$store.listen('$sessionSignal', async (signal) => {
             if (!signal) return
-            await fetchSession()
+            // Force refresh when session signal changes
+            await fetchSession(true)
         })
     }
 
     return {
         session,
         user,
+        userModel: computed(() => user.value ? make(User, user.value) : null),
         loggedIn: computed(() => !!session.value),
         signIn: client.signIn,
         signUp: client.signUp,

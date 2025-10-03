@@ -6,6 +6,8 @@ import ContactMethod from './ContactMethod';
 export default class User extends withTraits(Model, HasUniqueIds) {
   declare id: string;
   declare name: string;
+  declare username: string | null;
+  declare biography: string | null;
   declare email: string;
   declare emailVerified: boolean;
   declare phoneNumber: string | null;
@@ -15,9 +17,11 @@ export default class User extends withTraits(Model, HasUniqueIds) {
   declare createdAt: Date;
   declare updatedAt: Date;
 
+  declare onboarding_completed_at: Date | null;
+
   declare avatar: string | null;
-  declare username: string | null;
   declare full_name: string | null;
+  declare was_onboarded: boolean;
 
   static UPDATED_AT = "updatedAt";
   static CREATED_AT = "createdAt";
@@ -42,7 +46,13 @@ export default class User extends withTraits(Model, HasUniqueIds) {
 
   attributeUsername() {
     return Attribute.make({
-      get: (value: string, attributes: any) => attributes.username || attributes.email?.split('@')[0],
+      get: (value: string, attributes: any) => value || attributes.email?.split('@')[0],
+    })
+  }
+
+  attributeWasOnboarded() {
+    return Attribute.make({
+      get: (value: string, attributes: any) => !!attributes.onboarding_completed_at,
     })
   }
 
