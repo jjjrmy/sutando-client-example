@@ -72,6 +72,11 @@ export default defineNuxtConfig({
         headers: {
             contentSecurityPolicy: {
                 'img-src': ["'self'", 'data:', 'https://www.gravatar.com', process.env.CDN_URL || ''],
+            },
+            permissionsPolicy: {
+                'camera': ['self'],
+                'microphone': ['self'],
+                'geolocation': [],
             }
         },
         corsHandler: {
