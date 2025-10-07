@@ -81,7 +81,7 @@ export default defineNuxtConfig({
             }
         },
         corsHandler: {
-            origin: [process.env.APP_URL, 'capacitor://*', 'https://localhost:3000'],
+            origin: [process.env.APP_URL, 'capacitor://localhost', 'https://localhost:3000'],
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowHeaders: ['Content-Type', 'Authorization'],
             credentials: true,

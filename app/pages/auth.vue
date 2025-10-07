@@ -8,7 +8,7 @@
         <div
           class="inline-flex items-center justify-center w-24 h-24 bg-white bg-opacity-20 rounded-3xl backdrop-blur-sm mb-4"
         >
-          <Icon name="ri:lock-unlock-line" size="56" class="text-white" />
+          <Icon name="ri:instagram-line" size="56" class="text-black" />
         </div>
         <h1 class="text-4xl font-bold text-white mb-2">Welcome</h1>
         <p class="text-white text-opacity-90">Sign in to continue</p>
