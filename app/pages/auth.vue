@@ -163,7 +163,7 @@ const loading = ref(false);
 const error = ref("");
 const success = ref(false);
 
-const { client: authClient } = useAuth();
+const { client: authClient, fetchSession } = useAuth();
 
 const isNative = Capacitor.isNativePlatform();
 
@@ -228,6 +228,10 @@ const handleOtpSubmit = async () => {
     if (authError) throw authError;
 
     success.value = true;
+
+    // Wait for session to be fetched before navigating
+    await fetchSession(true);
+
     await navigateTo("/");
   } catch (err: any) {
     error.value = err?.message || "Verification failed. Please try again.";
@@ -265,7 +269,9 @@ const signInWithApple = async () => {
     });
     if (authError) throw authError;
 
-    // Redirect immediately for OAuth
+    // Wait for session to be fetched before navigating
+    await fetchSession(true);
+
     await navigateTo("/");
   } catch (err: any) {
     error.value = err?.message || "Apple sign-in failed";
@@ -285,7 +291,9 @@ const signInWithGoogle = async () => {
     });
     if (authError) throw authError;
 
-    // Redirect immediately for OAuth
+    // Wait for session to be fetched before navigating
+    await fetchSession(true);
+
     await navigateTo("/");
   } catch (err: any) {
     error.value = err?.message || "Google sign-in failed";

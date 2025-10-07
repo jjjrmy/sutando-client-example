@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 const isSSR = import.meta.env.NUXT_SSR != 'false';
 const isSSL = import.meta.env.NUXT_SSL == 'true';
+const isMobile = import.meta.env.NUXT_MOBILE == 'true';
 
 import appConfig from "./capacitor.config";
 
@@ -27,7 +28,7 @@ export default defineNuxtConfig({
             appUrl: process.env.APP_URL,
             appIdentifier: appConfig.appId,
             apiBaseUrl: isSSR ? undefined : process.env.APP_URL,
-            isMobile: import.meta.env.NUXT_MOBILE == 'true',
+            isMobile,
             auth: {
                 redirectUserTo: '/',
                 redirectGuestTo: '/auth',
@@ -36,7 +37,7 @@ export default defineNuxtConfig({
                 redirectTo: '/paywall',
                 allowTrial: true,
             },
-            cdnUrl: process.env.CDN_URL || '',
+            cdnUrl: process.env.CDN_URL,
         }
     },
     vite: {
@@ -71,7 +72,7 @@ export default defineNuxtConfig({
     security: {
         headers: {
             contentSecurityPolicy: {
-                'img-src': ["'self'", 'data:', 'https://www.gravatar.com', process.env.CDN_URL || ''],
+                'img-src': ['self', 'data:', 'https://www.gravatar.com', process.env.CDN_URL].filter(Boolean),
             },
             permissionsPolicy: {
                 'camera': ['self'],
@@ -80,7 +81,7 @@ export default defineNuxtConfig({
             }
         },
         corsHandler: {
-            origin: ['http://127.0.0.1:3000', 'https://127.0.0.1:3000', 'http://localhost:3000', 'https://localhost:3000', 'https://192.168.0.122:3000', 'http://localhost:3001', 'capacitor://localhost'],
+            origin: [process.env.APP_URL, 'capacitor://*', 'https://localhost:3000'],
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowHeaders: ['Content-Type', 'Authorization'],
             credentials: true,
